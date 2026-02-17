@@ -45,7 +45,7 @@ export default function DropZone({ onFileSelect, visible }) {
         const { left, top, width, height } = card.getBoundingClientRect();
         const x = (e.clientX - left) / width - 0.5;   // -0.5 to 0.5
         const y = (e.clientY - top) / height - 0.5;
-        card.style.transform = `perspective(800px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) scale(1.01)`;
+        card.style.transform = `perspective(800px) rotateY(${x * 3}deg) rotateX(${-y * 3}deg)`;
     }, []);
 
     const handleMouseLeave = useCallback(() => {

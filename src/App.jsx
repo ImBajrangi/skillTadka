@@ -1,5 +1,6 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import usePdfViewer from './hooks/usePdfViewer';
+import LandingPage from './components/LandingPage';
 import Header from './components/Header';
 import Toolbar from './components/Toolbar';
 import DropZone from './components/DropZone';
@@ -8,18 +9,33 @@ import Sidebar from './components/Sidebar';
 import Loader from './components/Loader';
 import ErrorModal from './components/ErrorModal';
 import Background from './components/Background';
-import Confetti from './components/Confetti';
 
 export default function App() {
   const fileInputRef = useRef(null);
   const viewer = usePdfViewer();
-  const [confettiKey, setConfettiKey] = useState(0);
+  const [showLanding, setShowLanding] = useState(true);
 
-  /* Trigger confetti when PDF loads */
-  useEffect(() => {
-    if (viewer.pdfLoaded) setConfettiKey((k) => k + 1);
-  }, [viewer.pdfLoaded]);
+  const handleStartLearning = () => {
+    setShowLanding(false);
+    // Trigger file picker after a brief moment
+    setTimeout(() => fileInputRef.current?.click(), 100);
+  };
 
+  const handleFileSelect = (file) => {
+    viewer.handleFileSelect(file);
+    setShowLanding(false);
+  };
+
+  // Show landing page if no PDF is loaded
+  if (showLanding && !viewer.pdfLoaded) {
+    return (
+      <div className="light-theme">
+        <LandingPage onStartLearning={handleStartLearning} />
+      </div>
+    );
+  }
+
+  // Show PDF viewer
   return (
     <div className={viewer.isDark ? 'dark-theme' : 'light-theme'}>
       <Background />
@@ -37,7 +53,7 @@ export default function App() {
           style={{ display: 'none' }}
           onChange={(e) => {
             const f = e.target.files?.[0];
-            if (f) viewer.handleFileSelect(f);
+            if (f) handleFileSelect(f);
           }}
         />
 
@@ -67,7 +83,7 @@ export default function App() {
           />
 
           <DropZone
-            onFileSelect={viewer.handleFileSelect}
+            onFileSelect={handleFileSelect}
             visible={!viewer.pdfLoaded}
           />
         </main>
@@ -81,9 +97,9 @@ export default function App() {
         />
       </div>
 
-      <Confetti trigger={confettiKey} />
       <Loader visible={viewer.isLoading} />
       <ErrorModal message={viewer.error} onClose={viewer.clearError} />
     </div>
   );
 }
+
