@@ -30,7 +30,7 @@ class ContentDetailsScreen extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.black.withOpacity(0.4),
+                      Colors.black.withValues(alpha: 0.4),
                       AppColors.bgDark,
                     ],
                   ),
@@ -47,7 +47,7 @@ class ContentDetailsScreen extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back_ios_new_rounded,
                     color: Colors.white),
                 style: IconButton.styleFrom(
-                  backgroundColor: Colors.black.withOpacity(0.3),
+                  backgroundColor: Colors.black.withValues(alpha: 0.3),
                   padding: const EdgeInsets.all(12),
                 ),
               ),
@@ -67,7 +67,7 @@ class ContentDetailsScreen extends StatelessWidget {
                       const BorderRadius.vertical(top: Radius.circular(32)),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.5),
+                      color: Colors.black.withValues(alpha: 0.5),
                       blurRadius: 40,
                       offset: const Offset(0, -10),
                     ),
@@ -84,7 +84,7 @@ class ContentDetailsScreen extends StatelessWidget {
                           width: 40,
                           height: 4,
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
+                            color: Colors.white.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(2),
                           ),
                         ),
@@ -96,7 +96,7 @@ class ContentDetailsScreen extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.1),
+                              color: AppColors.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Text(
@@ -150,7 +150,7 @@ class ContentDetailsScreen extends StatelessWidget {
                       Text(
                         'This module covers the fundamental concepts of the wave function in quantum mechanics, including the Schrodinger equation and probability distributions. Ideal for Grade 12 Advanced Physics students.',
                         style: TextStyle(
-                          color: AppColors.textOffWhite.withOpacity(0.8),
+                          color: AppColors.textOffWhite.withValues(alpha: 0.8),
                           fontSize: 16,
                           height: 1.6,
                         ),
@@ -190,7 +190,7 @@ class ContentDetailsScreen extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.05),
+            color: Colors.white.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(16),
           ),
           child:
@@ -226,9 +226,9 @@ class ContentDetailsScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.03),
+        color: Colors.white.withValues(alpha: 0.03),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Row(
         children: [

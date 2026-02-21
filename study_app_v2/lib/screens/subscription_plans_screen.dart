@@ -22,7 +22,7 @@ class SubscriptionPlansScreen extends StatelessWidget {
               height: 250,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.primary.withOpacity(0.15),
+                color: AppColors.primary.withValues(alpha: 0.15),
               ),
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
@@ -102,7 +102,8 @@ class SubscriptionPlansScreen extends StatelessWidget {
           color: Colors.white,
           shape: BoxShape.circle,
           boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)
+            BoxShadow(
+                color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
           ],
         ),
         child: Icon(icon, color: AppColors.textMain, size: 20),
@@ -114,12 +115,12 @@ class SubscriptionPlansScreen extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.7),
+        color: Colors.white.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(32),
-        border: Border.all(color: Colors.white.withOpacity(0.5)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.5)),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 30,
               offset: const Offset(0, 10)),
         ],
@@ -136,7 +137,7 @@ class SubscriptionPlansScreen extends StatelessWidget {
                   width: 140,
                   height: 140,
                   decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
+                      color: AppColors.primary.withValues(alpha: 0.1),
                       shape: BoxShape.circle)),
             ),
             Padding(
@@ -151,7 +152,7 @@ class SubscriptionPlansScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             blurRadius: 20)
                       ],
                     ),
@@ -163,7 +164,7 @@ class SubscriptionPlansScreen extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.2),
+                      color: AppColors.primary.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: const Text('BEST VALUE • SAVE 40%',
@@ -245,7 +246,7 @@ class SubscriptionPlansScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)
         ],
       ),
       child: Column(
@@ -254,7 +255,7 @@ class SubscriptionPlansScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: AppColors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle),
             child: Icon(icon, color: AppColors.primary, size: 20),
           ),
@@ -343,7 +344,7 @@ class SubscriptionPlansScreen extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.fromLTRB(24, 16, 24, 40),
             decoration: BoxDecoration(
-              color: AppColors.bgCream.withOpacity(0.8),
+              color: AppColors.bgCream.withValues(alpha: 0.8),
               border: Border(top: BorderSide(color: Colors.grey[200]!)),
             ),
             child: Column(
@@ -356,7 +357,7 @@ class SubscriptionPlansScreen extends StatelessWidget {
                       backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.textMain,
                       elevation: 10,
-                      shadowColor: AppColors.primary.withOpacity(0.5),
+                      shadowColor: AppColors.primary.withValues(alpha: 0.5),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32)),
                     ),

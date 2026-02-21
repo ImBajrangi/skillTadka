@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bento_card.dart';
+import '../utils/mock_data.dart';
 
 class ModernHomeScreen extends StatelessWidget {
   const ModernHomeScreen({super.key});
@@ -40,11 +40,11 @@ class ModernHomeScreen extends StatelessWidget {
         Row(
           children: [
             Container(
-              width: 40,
-              height: 40,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white.withOpacity(0.1)),
+                border: Border.all(color: AppColors.border),
                 image: const DecorationImage(
                   image: NetworkImage(
                       'https://lh3.googleusercontent.com/aida-public/AB6AXuBqUWP7HM6rEHnI5McRApJipQP5ABiMvZt7lTycq939qkZCO7NM8Aqb-aAmcIPCUpm0pib7oQMJh-xCec7v8lpVmCegcqW75UA30TXPusU062bT4alEykfyED8stqFy_Y7Chq8To4Zxt0owfMK2OWN4eKYDqr2Vm786b5CGPWn8jFPboyVUnCR2cgAsIM-11WNXF-IzViRvMVZRIfIO0DopIp_Zwkit7O8FeztCOoD-FmZfx-HxSkdIfIQBv7jp-Q_tUtg5N7GReo4'),
@@ -58,33 +58,24 @@ class ModernHomeScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    SvgPicture.asset(
-                      'assets/images/logo.svg',
-                      height: 18,
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.primary,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
                     Text(
-                      'PADHLE HUB',
+                      'ALEX',
                       style: GoogleFonts.robotoMono(
-                        color: AppColors.primary,
+                        color: AppColors.textMain,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: -0.5,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ],
                 ),
                 Text(
-                  'Alex • Grade 11',
-                  style: GoogleFonts.inter(
+                  'GRADE 11 • SCIENCE STREAM',
+                  style: GoogleFonts.robotoMono(
                     color: AppColors.textSecondary,
                     fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.0,
                   ),
                 ),
               ],
@@ -94,7 +85,7 @@ class ModernHomeScreen extends StatelessWidget {
         Row(
           children: [
             _buildHeaderAction(Icons.search_rounded),
-            const SizedBox(width: 12),
+            const SizedBox(width: 8),
             _buildHeaderAction(Icons.notifications_none_rounded),
           ],
         ),
@@ -104,35 +95,41 @@ class ModernHomeScreen extends StatelessWidget {
 
   Widget _buildHeaderAction(IconData icon) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      width: 36,
+      height: 36,
       decoration: BoxDecoration(
         color: AppColors.surface,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.border),
       ),
       child: Icon(icon, color: AppColors.textSecondary, size: 20),
     );
   }
 
   Widget _buildSectionHeader(String title) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: const TextStyle(
-            color: AppColors.textMain,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title.toUpperCase(),
+              style: GoogleFonts.robotoMono(
+                color: AppColors.textSecondary,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2.0,
+              ),
+            ),
+            const Icon(Icons.tune_rounded,
+                color: AppColors.textSecondary, size: 18),
+          ],
         ),
-        Text(
-          'View All',
-          style: TextStyle(
-            color: AppColors.primary,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+        const SizedBox(height: 8),
+        Container(
+          height: 1,
+          color: AppColors.border.withValues(alpha: 0.5),
         ),
       ],
     );
@@ -144,7 +141,7 @@ class ModernHomeScreen extends StatelessWidget {
         Expanded(
           flex: 45,
           child: BentoCard(
-            title: '14 Days',
+            title: '${MockData.userStreak} Days',
             subtitle: 'Current Streak',
             icon: Icons.local_fire_department_rounded,
             accentColor: Colors.orange,
@@ -155,11 +152,14 @@ class ModernHomeScreen extends StatelessWidget {
         Expanded(
           flex: 55,
           child: BentoCard(
-            title: '2,450',
+            title: MockData.userXP.toString().replaceAllMapped(
+                RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                (Match m) => '${m[1]},'),
             subtitle: 'Total XP Earned',
             icon: Icons.bolt_rounded,
             accentColor: AppColors.primary,
             height: 140,
+            isGlow: true,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -168,8 +168,8 @@ class ModernHomeScreen extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4),
                   child: LinearProgressIndicator(
-                    value: 0.7,
-                    backgroundColor: AppColors.primary.withOpacity(0.1),
+                    value: MockData.dailyGoalProgress,
+                    backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                     valueColor: const AlwaysStoppedAnimation(AppColors.primary),
                     minHeight: 6,
                   ),
@@ -188,10 +188,10 @@ class ModernHomeScreen extends StatelessWidget {
       children: [
         Expanded(
           child: BentoCard(
-            title: 'Quantum Physics',
+            title: MockData.subjects[0]['name'] as String,
             subtitle: 'Unit 4: Mechanics',
-            icon: Icons.science_rounded,
-            accentColor: AppColors.accentBlue,
+            icon: MockData.subjects[0]['icon'] as IconData,
+            accentColor: MockData.subjects[0]['color'] as Color,
             height: 180,
           ),
         ),
@@ -200,16 +200,16 @@ class ModernHomeScreen extends StatelessWidget {
           child: Column(
             children: [
               BentoCard(
-                title: 'Maths',
-                icon: Icons.functions_rounded,
-                accentColor: AppColors.accentPurple,
+                title: MockData.subjects[1]['name'] as String,
+                icon: MockData.subjects[1]['icon'] as IconData,
+                accentColor: MockData.subjects[1]['color'] as Color,
                 height: 82,
               ),
               const SizedBox(height: 16),
               BentoCard(
-                title: 'Chemistry',
-                icon: Icons.biotech_rounded,
-                accentColor: AppColors.secondary,
+                title: MockData.subjects[2]['name'] as String,
+                icon: MockData.subjects[2]['icon'] as IconData,
+                accentColor: MockData.subjects[2]['color'] as Color,
                 height: 82,
               ),
             ],
@@ -238,14 +238,14 @@ class ModernHomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: color, size: 20),

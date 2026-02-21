@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bento_card.dart';
+import '../utils/mock_data.dart';
 
 class LibraryVaultScreen extends StatelessWidget {
   const LibraryVaultScreen({super.key});
@@ -38,11 +38,11 @@ class LibraryVaultScreen extends StatelessWidget {
         Row(
           children: [
             Container(
-              width: 40,
-              height: 40,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: Colors.white.withOpacity(0.1)),
+                border: Border.all(color: AppColors.border),
                 image: const DecorationImage(
                   image: NetworkImage(
                       'https://lh3.googleusercontent.com/aida-public/AB6AXuBqUWP7HM6rEHnI5McRApJipQP5ABiMvZt7lTycq939qkZCO7NM8Aqb-aAmcIPCUpm0pib7oQMJh-xCec7v8lpVmCegcqW75UA30TXPusU062bT4alEykfyED8stqFy_Y7Chq8To4Zxt0owfMK2OWN4eKYDqr2Vm786b5CGPWn8jFPboyVUnCR2cgAsIM-11WNXF-IzViRvMVZRIfIO0DopIp_Zwkit7O8FeztCOoD-FmZfx-HxSkdIfIQBv7jp-Q_tUtg5N7GReo4'),
@@ -56,33 +56,24 @@ class LibraryVaultScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    SvgPicture.asset(
-                      'assets/images/logo.svg',
-                      height: 18,
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.primary,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    const SizedBox(width: 6),
                     Text(
-                      'PADHLE HUB',
+                      'ALEX',
                       style: GoogleFonts.robotoMono(
-                        color: AppColors.primary,
+                        color: AppColors.textMain,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: -0.5,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ],
                 ),
                 Text(
-                  'Alex • Grade 11',
-                  style: GoogleFonts.inter(
+                  'GRADE 11 • SCIENCE STREAM',
+                  style: GoogleFonts.robotoMono(
                     color: AppColors.textSecondary,
                     fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.0,
                   ),
                 ),
               ],
@@ -92,7 +83,7 @@ class LibraryVaultScreen extends StatelessWidget {
         Row(
           children: [
             _buildHeaderAction(Icons.search_rounded),
-            const SizedBox(width: 12),
+            const SizedBox(width: 8),
             _buildHeaderAction(Icons.notifications_none_rounded),
           ],
         ),
@@ -102,24 +93,43 @@ class LibraryVaultScreen extends StatelessWidget {
 
   Widget _buildHeaderAction(IconData icon) {
     return Container(
-      padding: const EdgeInsets.all(10),
+      width: 36,
+      height: 36,
       decoration: BoxDecoration(
         color: AppColors.surface,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.border),
       ),
       child: Icon(icon, color: AppColors.textSecondary, size: 20),
     );
   }
 
   Widget _buildSectionHeader(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        color: AppColors.textMain,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title.toUpperCase(),
+              style: GoogleFonts.robotoMono(
+                color: AppColors.textSecondary,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2.0,
+              ),
+            ),
+            const Icon(Icons.manage_search_rounded,
+                color: AppColors.textSecondary, size: 18),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Container(
+          height: 1,
+          color: AppColors.border.withValues(alpha: 0.5),
+        ),
+      ],
     );
   }
 
@@ -150,38 +160,11 @@ class LibraryVaultScreen extends StatelessWidget {
   }
 
   Widget _buildCategoriesList() {
-    final categories = [
-      {
-        'name': 'Science',
-        'icon': Icons.science_rounded,
-        'count': '124 Materials',
-        'color': Colors.blue
-      },
-      {
-        'name': 'Mathematics',
-        'icon': Icons.functions_rounded,
-        'count': '98 Materials',
-        'color': Colors.purple
-      },
-      {
-        'name': 'Humanities',
-        'icon': Icons.public_rounded,
-        'count': '76 Materials',
-        'color': Colors.orange
-      },
-      {
-        'name': 'Languages',
-        'icon': Icons.translate_rounded,
-        'count': '54 Materials',
-        'color': Colors.green
-      },
-    ];
-
     return Column(
-      children: categories
+      children: MockData.libraryCategories
           .map((cat) => _buildCategoryItem(
-                cat['name'] as String,
-                cat['count'] as String,
+                cat['title'] as String,
+                '${cat['count']} Materials',
                 cat['icon'] as IconData,
                 cat['color'] as Color,
               ))
@@ -197,14 +180,14 @@ class LibraryVaultScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(icon, color: color, size: 24),

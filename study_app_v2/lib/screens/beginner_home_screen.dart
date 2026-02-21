@@ -42,7 +42,7 @@ class BeginnerHomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
+                    color: Colors.black.withValues(alpha: 0.04),
                     blurRadius: 15,
                     offset: const Offset(0, 8),
                   ),
@@ -84,7 +84,7 @@ class BeginnerHomeScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (_) => const GradeSelectionScreen())),
-            child: Text(
+            child: const Text(
               'GRADE 11 • SCIENCE STREAM',
               style: TextStyle(
                 fontSize: 10,
@@ -125,11 +125,11 @@ class BeginnerHomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFFFFBEB),
         borderRadius: BorderRadius.circular(40),
-        border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
       ),
-      child: Row(
+      child: const Row(
         children: [
-          const Text('🔥', style: TextStyle(fontSize: 32)),
+          Text('🔥', style: TextStyle(fontSize: 32)),
           const SizedBox(width: 16),
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +168,8 @@ class BeginnerHomeScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 4),
-                  Icon(Icons.bolt, color: AppColors.accentPurple, size: 28),
+                  const Icon(Icons.bolt,
+                      color: AppColors.accentPurple, size: 28),
                 ],
               ),
               const Text(
@@ -261,7 +262,7 @@ class BeginnerHomeScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(44),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 20,
               offset: const Offset(0, 10))
         ],
@@ -279,8 +280,8 @@ class BeginnerHomeScreen extends StatelessWidget {
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
                   colors: [
-                    accent.withOpacity(0.4),
-                    accent.withOpacity(0.05),
+                    accent.withValues(alpha: 0.4),
+                    accent.withValues(alpha: 0.05),
                     Colors.transparent
                   ],
                 ),
@@ -298,7 +299,10 @@ class BeginnerHomeScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [accent.withOpacity(0.6), accent.withOpacity(0.1)],
+                  colors: [
+                    accent.withValues(alpha: 0.6),
+                    accent.withValues(alpha: 0.1)
+                  ],
                 ),
               ),
             ),
@@ -311,7 +315,7 @@ class BeginnerHomeScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w900,
-                  color: accent.withOpacity(0.6),
+                  color: accent.withValues(alpha: 0.6),
                   letterSpacing: 1.0,
                 ),
               ),
@@ -345,7 +349,8 @@ class BeginnerHomeScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                            color: accent.withOpacity(0.2), blurRadius: 10)
+                            color: accent.withValues(alpha: 0.2),
+                            blurRadius: 10)
                       ],
                     ),
                     child: Icon(Icons.arrow_forward, color: accent, size: 18),
@@ -370,7 +375,7 @@ class BeginnerHomeScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 15,
               offset: const Offset(0, 5))
         ],
@@ -387,7 +392,7 @@ class BeginnerHomeScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
-                  colors: [accent.withOpacity(0.3), Colors.transparent],
+                  colors: [accent.withValues(alpha: 0.3), Colors.transparent],
                 ),
               ),
             ),
@@ -401,7 +406,10 @@ class BeginnerHomeScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: LinearGradient(
-                  colors: [accent.withOpacity(0.7), accent.withOpacity(0.2)],
+                  colors: [
+                    accent.withValues(alpha: 0.7),
+                    accent.withValues(alpha: 0.2)
+                  ],
                 ),
               ),
             ),
@@ -433,7 +441,7 @@ class BeginnerHomeScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w900,
-                      color: accent.withOpacity(0.8),
+                      color: accent.withValues(alpha: 0.8),
                       letterSpacing: 0.5,
                     ),
                   ),
@@ -492,7 +500,7 @@ class BeginnerHomeScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF7C3AED).withOpacity(0.3),
+                  color: const Color(0xFF7C3AED).withValues(alpha: 0.3),
                   blurRadius: 15,
                   offset: const Offset(0, 10),
                 ),
@@ -548,7 +556,7 @@ class BeginnerHomeScreen extends StatelessWidget {
         border: Border.all(color: Colors.grey[100]!),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.02),
+              color: Colors.black.withValues(alpha: 0.02),
               blurRadius: 15,
               offset: const Offset(0, 5))
         ],
@@ -560,7 +568,7 @@ class BeginnerHomeScreen extends StatelessWidget {
             width: 56,
             height: 56,
             decoration: BoxDecoration(
-              color: bg.withOpacity(0.5),
+              color: bg.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(Icons.insert_drive_file, color: accent, size: 28),

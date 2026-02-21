@@ -53,8 +53,9 @@ class TutorChatScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         constraints: BoxConstraints(maxWidth: isTutor ? 280 : 260),
         decoration: BoxDecoration(
-          color:
-              isTutor ? AppColors.primary.withOpacity(0.1) : AppColors.surface,
+          color: isTutor
+              ? AppColors.primary.withValues(alpha: 0.1)
+              : AppColors.surface,
           borderRadius: BorderRadius.circular(20).copyWith(
             bottomLeft:
                 isTutor ? const Radius.circular(0) : const Radius.circular(20),
@@ -63,8 +64,8 @@ class TutorChatScreen extends StatelessWidget {
           ),
           border: Border.all(
             color: isTutor
-                ? AppColors.primary.withOpacity(0.2)
-                : Colors.white.withOpacity(0.05),
+                ? AppColors.primary.withValues(alpha: 0.2)
+                : Colors.white.withValues(alpha: 0.05),
           ),
         ),
         child: Text(

@@ -19,7 +19,7 @@ class StudyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Study App',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.dark(),
+      theme: AppTheme.darkTheme,
       home: const OnboardingScreen(),
     );
   }

@@ -138,7 +138,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           border: Border.all(
                             color: isSelected
                                 ? AppColors.primary
-                                : Colors.white.withOpacity(0.05),
+                                : Colors.white.withValues(alpha: 0.05),
                           ),
                         ),
                         alignment: Alignment.center,

@@ -6,6 +6,8 @@ import '../widgets/glass_bottom_bar.dart';
 import '../providers/user_prefs_provider.dart';
 import 'library_vault_screen.dart';
 import 'modern_home_screen.dart';
+import 'statistics_screen.dart';
+import 'profile_screen.dart';
 
 class HomeDashboardScreen extends ConsumerStatefulWidget {
   const HomeDashboardScreen({super.key});
@@ -21,8 +23,8 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
   final List<Widget> _screens = [
     const ModernHomeScreen(),
     const LibraryVaultScreen(),
-    const Scaffold(body: Center(child: Text('Statistics'))),
-    const Scaffold(body: Center(child: Text('Profile'))),
+    const StatisticsScreen(),
+    const ProfileScreen(),
   ];
 
   @override

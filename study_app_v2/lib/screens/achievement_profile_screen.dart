@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:study_app/theme/app_theme.dart';
 import 'package:study_app/widgets/premium_effects.dart';
-import 'dart:ui';
 
 class AchievementProfileScreen extends StatelessWidget {
   const AchievementProfileScreen({super.key});
@@ -145,7 +144,7 @@ class AchievementProfileScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 15)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 15)
         ],
       ),
       child: Column(
@@ -177,7 +176,7 @@ class AchievementProfileScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 15)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 15)
         ],
       ),
       child: Row(
@@ -185,7 +184,7 @@ class AchievementProfileScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-                color: accent.withOpacity(0.1), shape: BoxShape.circle),
+                color: accent.withValues(alpha: 0.1), shape: BoxShape.circle),
             child: Icon(icon, color: accent, size: 28),
           ),
           const SizedBox(width: 20),
@@ -251,7 +250,7 @@ class AchievementProfileScreen extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)
         ],
       ),
       child: Row(
@@ -259,7 +258,7 @@ class AchievementProfileScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
             ),
             child: Icon(icon, color: color, size: 24),

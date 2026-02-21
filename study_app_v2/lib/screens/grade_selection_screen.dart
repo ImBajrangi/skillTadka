@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:study_app/theme/app_theme.dart';
 import 'package:study_app/widgets/premium_effects.dart';
-import 'dart:ui';
 
 class GradeSelectionScreen extends StatefulWidget {
   const GradeSelectionScreen({super.key});
@@ -30,7 +29,7 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                 width: 200,
                 height: 200,
                 decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     shape: BoxShape.circle)),
           ),
           SafeArea(
@@ -127,7 +126,7 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(32)),
                           elevation: 10,
-                          shadowColor: AppColors.primary.withOpacity(0.5),
+                          shadowColor: AppColors.primary.withValues(alpha: 0.5),
                         ),
                         child: const Text('CONTINUE',
                             style: TextStyle(

@@ -32,9 +32,9 @@ class ResourceDetailScreen extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black.withOpacity(0.4),
+                          Colors.black.withValues(alpha: 0.4),
                           Colors.transparent,
-                          Colors.black.withOpacity(0.6),
+                          Colors.black.withValues(alpha: 0.6),
                         ],
                       ),
                     ),
@@ -67,10 +67,10 @@ class ResourceDetailScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.4),
+                          color: Colors.black.withValues(alpha: 0.4),
                           borderRadius: BorderRadius.circular(20),
-                          border:
-                              Border.all(color: Colors.white.withOpacity(0.1)),
+                          border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.1)),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -165,7 +165,7 @@ class ResourceDetailScreen extends StatelessWidget {
                           backgroundColor: AppColors.primary,
                           foregroundColor: AppColors.textMain,
                           elevation: 8,
-                          shadowColor: AppColors.primary.withOpacity(0.5),
+                          shadowColor: AppColors.primary.withValues(alpha: 0.5),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(32)),
                         ),
@@ -230,9 +230,9 @@ class ResourceDetailScreen extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               shape: BoxShape.circle,
-              border: Border.all(color: Colors.white.withOpacity(0.3)),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
             ),
             child: Icon(icon, color: Colors.white, size: 24),
           ),
@@ -305,11 +305,11 @@ class ResourceDetailScreen extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              _buildBar(16, AppColors.accentBlue.withOpacity(0.3)),
+              _buildBar(16, AppColors.accentBlue.withValues(alpha: 0.3)),
               const SizedBox(width: 4),
-              _buildBar(24, AppColors.accentBlue.withOpacity(0.5)),
+              _buildBar(24, AppColors.accentBlue.withValues(alpha: 0.5)),
               const SizedBox(width: 4),
-              _buildBar(12, AppColors.accentBlue.withOpacity(0.3)),
+              _buildBar(12, AppColors.accentBlue.withValues(alpha: 0.3)),
               const SizedBox(width: 4),
               _buildBar(32, AppColors.accentBlue),
               const SizedBox(width: 4),

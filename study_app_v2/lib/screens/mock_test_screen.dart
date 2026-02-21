@@ -35,7 +35,7 @@ class MockTestScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(32),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Column(
         children: [
@@ -58,7 +58,7 @@ class MockTestScreen extends StatelessWidget {
                   endAngle: 270,
                   axisLineStyle: AxisLineStyle(
                     thickness: 0.2,
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     thicknessUnit: GaugeSizeUnit.factor,
                   ),
                   pointers: const <GaugePointer>[
@@ -88,7 +88,7 @@ class MockTestScreen extends StatelessWidget {
                             'Excellent!',
                             style: TextStyle(
                               fontSize: 14,
-                              color: AppColors.primary.withOpacity(0.8),
+                              color: AppColors.primary.withValues(alpha: 0.8),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -151,7 +151,7 @@ class MockTestScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: value,
-              backgroundColor: color.withOpacity(0.1),
+              backgroundColor: color.withValues(alpha: 0.1),
               valueColor: AlwaysStoppedAnimation(color),
               minHeight: 8,
             ),

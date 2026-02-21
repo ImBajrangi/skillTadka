@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 
@@ -11,6 +10,7 @@ class BentoCard extends StatelessWidget {
   final Widget? child;
   final double? width;
   final double? height;
+  final bool isGlow;
   final VoidCallback? onTap;
 
   const BentoCard({
@@ -22,6 +22,7 @@ class BentoCard extends StatelessWidget {
     this.child,
     this.width,
     this.height,
+    this.isGlow = false,
     this.onTap,
   });
 
@@ -37,14 +38,8 @@ class BentoCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppTheme.borderRadius),
-          border: Border.all(color: Colors.white.withOpacity(0.05)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
-            ),
-          ],
+          border: Border.all(color: AppColors.border),
+          boxShadow: isGlow ? AppColors.emeraldGlow : AppColors.cardShadow,
         ),
         clipBehavior: Clip.antiAlias,
         child: Stack(
@@ -56,7 +51,8 @@ class BentoCard extends StatelessWidget {
               child: Icon(
                 icon,
                 size: 80,
-                color: (accentColor ?? AppColors.primary).withOpacity(0.05),
+                color:
+                    (accentColor ?? AppColors.primary).withValues(alpha: 0.05),
               ),
             ),
             Padding(
@@ -68,8 +64,8 @@ class BentoCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color:
-                          (accentColor ?? AppColors.primary).withOpacity(0.1),
+                      color: (accentColor ?? AppColors.primary)
+                          .withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(

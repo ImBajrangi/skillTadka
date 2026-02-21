@@ -35,16 +35,16 @@ class StatisticsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'ANALYTICS',
+          'STATISTICS',
           style: GoogleFonts.robotoMono(
             color: AppColors.primary,
-            fontSize: 14,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
             letterSpacing: 2.0,
           ),
         ),
         const SizedBox(height: 8),
-        Text(
+        const Text(
           'Your Growth',
           style: TextStyle(
             color: AppColors.textMain,
@@ -52,6 +52,11 @@ class StatisticsScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
             letterSpacing: -0.5,
           ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          height: 1,
+          color: AppColors.border.withValues(alpha: 0.5),
         ),
       ],
     );
@@ -78,7 +83,7 @@ class StatisticsScreen extends StatelessWidget {
                     canScaleToFit: true,
                     axisLineStyle: AxisLineStyle(
                       thickness: 20,
-                      color: Colors.white.withOpacity(0.05),
+                      color: Colors.white.withValues(alpha: 0.05),
                       cornerStyle: CornerStyle.bothCurve,
                     ),
                     pointers: <GaugePointer>[
@@ -89,7 +94,10 @@ class StatisticsScreen extends StatelessWidget {
                         color: AppColors.primary,
                         cornerStyle: CornerStyle.bothCurve,
                         gradient: const SweepGradient(
-                          colors: <Color>[AppColors.primaryAction, AppColors.primary],
+                          colors: <Color>[
+                            AppColors.primaryAction,
+                            AppColors.primary
+                          ],
                         ),
                       ),
                     ],
@@ -192,17 +200,22 @@ class StatisticsScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(subject['icon'] as IconData, color: subject['color'] as Color, size: 18),
+                  Icon(subject['icon'] as IconData,
+                      color: subject['color'] as Color, size: 18),
                   const SizedBox(width: 12),
                   Text(
                     subject['name'] as String,
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
               Text(
-                '${(subject['progress'] as double * 100).toInt()}%',
-                style: GoogleFonts.robotoMono(color: AppColors.textSecondary, fontSize: 12),
+                '${((subject['progress'] as double) * 100).toInt()}%',
+                style: GoogleFonts.robotoMono(
+                  color: AppColors.textSecondary,
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
@@ -211,8 +224,9 @@ class StatisticsScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: subject['progress'] as double,
-              backgroundColor: Colors.white.withOpacity(0.05),
-              valueColor: AlwaysStoppedAnimation<Color>(subject['color'] as Color),
+              backgroundColor: Colors.white.withValues(alpha: 0.05),
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(subject['color'] as Color),
               minHeight: 6,
             ),
           ),
@@ -230,7 +244,8 @@ class StatisticsScreen extends StatelessWidget {
           children: [
             const Text(
               'Activity Heatmap',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             // Simplied heatmap visualization for brevity
@@ -242,9 +257,11 @@ class StatisticsScreen extends StatelessWidget {
                   width: 25,
                   height: 25,
                   decoration: BoxDecoration(
-                    color: index % 5 == 0 ? AppColors.primary : AppColors.surface,
+                    color:
+                        index % 5 == 0 ? AppColors.primary : AppColors.surface,
                     borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: Colors.white.withOpacity(0.05)),
+                    border:
+                        Border.all(color: Colors.white.withValues(alpha: 0.05)),
                   ),
                 );
               }),
