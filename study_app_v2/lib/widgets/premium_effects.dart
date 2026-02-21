@@ -111,9 +111,15 @@ class PremiumGlassContainer extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: opacity),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.white.withValues(alpha: opacity)
+                : Colors.white.withValues(alpha: opacity + 0.5),
             borderRadius: effectiveRadius,
-            border: Border.all(color: AppColors.border),
+            border: Border.all(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.border
+                  : AppColors.borderLight,
+            ),
           ),
           child: child,
         ),

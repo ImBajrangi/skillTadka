@@ -36,9 +36,13 @@ class BentoCard extends StatelessWidget {
           minHeight: height ?? 0,
         ),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(AppTheme.borderRadius),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.border
+                : AppColors.borderLight,
+          ),
           boxShadow: isGlow ? AppColors.emeraldGlow : AppColors.cardShadow,
         ),
         clipBehavior: Clip.antiAlias,
@@ -80,7 +84,8 @@ class BentoCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.robotoMono(
-                      color: AppColors.textMain,
+                      color: Theme.of(context).textTheme.bodyLarge?.color ??
+                          AppColors.textMain,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                     ),
@@ -92,7 +97,8 @@ class BentoCard extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.inter(
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).textTheme.bodyMedium?.color ??
+                            AppColors.textSecondary,
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
                       ),

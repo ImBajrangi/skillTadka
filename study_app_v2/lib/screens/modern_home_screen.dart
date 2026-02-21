@@ -1,39 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/user_prefs_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bento_card.dart';
 import '../utils/mock_data.dart';
 
-class ModernHomeScreen extends StatelessWidget {
+class ModernHomeScreen extends ConsumerWidget {
   const ModernHomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(24, 80, 24, 120),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(context),
+            _buildHeader(context, ref),
             const SizedBox(height: 40),
-            _buildStatusBento(),
+            _buildStatusBento(context),
             const SizedBox(height: 32),
-            _buildSectionHeader('Today\'s Focus'),
+            _buildSectionHeader(context, 'Today\'s Focus'),
             const SizedBox(height: 20),
-            _buildSubjectsBento(),
+            _buildSubjectsBento(context),
             const SizedBox(height: 32),
-            _buildSectionHeader('Daily Assignments'),
+            _buildSectionHeader(context, 'Daily Assignments'),
             const SizedBox(height: 20),
-            _buildAssignmentsList(),
+            _buildAssignmentsList(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, WidgetRef ref) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -44,7 +46,11 @@ class ModernHomeScreen extends StatelessWidget {
               height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.border),
+                border: Border.all(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.border
+                      : AppColors.borderLight,
+                ),
                 image: const DecorationImage(
                   image: NetworkImage(
                       'https://lh3.googleusercontent.com/aida-public/AB6AXuBqUWP7HM6rEHnI5McRApJipQP5ABiMvZt7lTycq939qkZCO7NM8Aqb-aAmcIPCUpm0pib7oQMJh-xCec7v8lpVmCegcqW75UA30TXPusU062bT4alEykfyED8stqFy_Y7Chq8To4Zxt0owfMK2OWN4eKYDqr2Vm786b5CGPWn8jFPboyVUnCR2cgAsIM-11WNXF-IzViRvMVZRIfIO0DopIp_Zwkit7O8FeztCOoD-FmZfx-HxSkdIfIQBv7jp-Q_tUtg5N7GReo4'),
@@ -61,7 +67,8 @@ class ModernHomeScreen extends StatelessWidget {
                     Text(
                       'ALEX',
                       style: GoogleFonts.robotoMono(
-                        color: AppColors.textMain,
+                        color: Theme.of(context).textTheme.bodyLarge?.color ??
+                            AppColors.textMain,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
@@ -84,29 +91,46 @@ class ModernHomeScreen extends StatelessWidget {
         ),
         Row(
           children: [
-            _buildHeaderAction(Icons.search_rounded),
+            _buildHeaderAction(
+              context,
+              ref.watch(userPrefsProvider).themeMode == ThemeMode.dark
+                  ? Icons.light_mode_rounded
+                  : Icons.dark_mode_rounded,
+              onTap: () =>
+                  ref.read(userPrefsProvider.notifier).toggleThemeMode(),
+            ),
             const SizedBox(width: 8),
-            _buildHeaderAction(Icons.notifications_none_rounded),
+            _buildHeaderAction(context, Icons.search_rounded),
+            const SizedBox(width: 8),
+            _buildHeaderAction(context, Icons.notifications_none_rounded),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildHeaderAction(IconData icon) {
-    return Container(
-      width: 36,
-      height: 36,
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.border),
+  Widget _buildHeaderAction(BuildContext context, IconData icon,
+      {VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 36,
+        height: 36,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.border
+                : AppColors.borderLight,
+          ),
+        ),
+        child: Icon(icon, color: AppColors.textSecondary, size: 20),
       ),
-      child: Icon(icon, color: AppColors.textSecondary, size: 20),
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(BuildContext context, String title) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -129,13 +153,16 @@ class ModernHomeScreen extends StatelessWidget {
         const SizedBox(height: 8),
         Container(
           height: 1,
-          color: AppColors.border.withValues(alpha: 0.5),
+          color: (Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.border
+                  : AppColors.borderLight)
+              .withValues(alpha: 0.5),
         ),
       ],
     );
   }
 
-  Widget _buildStatusBento() {
+  Widget _buildStatusBento(BuildContext context) {
     return Row(
       children: [
         Expanded(
@@ -182,7 +209,7 @@ class ModernHomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSubjectsBento() {
+  Widget _buildSubjectsBento(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -219,26 +246,30 @@ class ModernHomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAssignmentsList() {
+  Widget _buildAssignmentsList(BuildContext context) {
     return Column(
       children: [
-        _buildAssignmentItem(
-            'Maths Quiz', 'Due tomorrow', Icons.quiz_rounded, Colors.purple),
+        _buildAssignmentItem(context, 'Maths Quiz', 'Due tomorrow',
+            Icons.quiz_rounded, Colors.purple),
         const SizedBox(height: 12),
-        _buildAssignmentItem(
-            'Physics Lab', 'Due in 3 days', Icons.biotech_rounded, Colors.blue),
+        _buildAssignmentItem(context, 'Physics Lab', 'Due in 3 days',
+            Icons.biotech_rounded, Colors.blue),
       ],
     );
   }
 
-  Widget _buildAssignmentItem(
-      String title, String due, IconData icon, Color color) {
+  Widget _buildAssignmentItem(BuildContext context, String title, String due,
+      IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white.withValues(alpha: 0.05)
+              : AppColors.borderLight,
+        ),
       ),
       child: Row(
         children: [
@@ -256,12 +287,15 @@ class ModernHomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title,
-                    style: const TextStyle(
-                        color: AppColors.textMain,
+                    style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyLarge?.color ??
+                            AppColors.textMain,
                         fontWeight: FontWeight.bold)),
                 Text(due,
-                    style: const TextStyle(
-                        color: AppColors.textSecondary, fontSize: 12)),
+                    style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium?.color ??
+                            AppColors.textSecondary,
+                        fontSize: 12)),
               ],
             ),
           ),

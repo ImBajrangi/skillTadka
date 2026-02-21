@@ -10,26 +10,26 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(24, 80, 24, 120),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
+            _buildHeader(context),
             const SizedBox(height: 40),
-            _buildProfileHeader(),
+            _buildProfileHeader(context),
             const SizedBox(height: 48),
-            _buildAchievementGrid(),
+            _buildAchievementGrid(context),
             const SizedBox(height: 48),
-            _buildSettingsList(),
+            _buildSettingsList(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,10 +43,11 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Settings',
           style: TextStyle(
-            color: AppColors.textMain,
+            color: Theme.of(context).textTheme.displayLarge?.color ??
+                AppColors.textMain,
             fontSize: 32,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.5,
@@ -55,13 +56,16 @@ class ProfileScreen extends StatelessWidget {
         const SizedBox(height: 8),
         Container(
           height: 1,
-          color: AppColors.border.withValues(alpha: 0.5),
+          color: (Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.border
+                  : AppColors.borderLight)
+              .withValues(alpha: 0.5),
         ),
       ],
     );
   }
 
-  Widget _buildProfileHeader() {
+  Widget _buildProfileHeader(BuildContext context) {
     return Column(
       children: [
         Container(
@@ -78,10 +82,10 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        const Text(
+        Text(
           'Alex Johnson',
           style: TextStyle(
-            color: Colors.white,
+            color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
@@ -98,23 +102,27 @@ class ProfileScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildHeaderBadge('Rank #12', Icons.emoji_events_rounded),
+            _buildHeaderBadge(context, 'Rank #12', Icons.emoji_events_rounded),
             const SizedBox(width: 12),
-            _buildHeaderBadge(
-                'Level ${MockData.userLevel}', Icons.military_tech_rounded),
+            _buildHeaderBadge(context, 'Level ${MockData.userLevel}',
+                Icons.military_tech_rounded),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildHeaderBadge(String text, IconData icon) {
+  Widget _buildHeaderBadge(BuildContext context, String text, IconData icon) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.white.withValues(alpha: 0.05)
+              : AppColors.borderLight,
+        ),
       ),
       child: Row(
         children: [
@@ -122,8 +130,9 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             text,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color:
+                  Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
               fontSize: 12,
               fontWeight: FontWeight.bold,
             ),
@@ -133,14 +142,15 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAchievementGrid() {
+  Widget _buildAchievementGrid(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Achievements',
           style: TextStyle(
-            color: Colors.white,
+            color:
+                Theme.of(context).textTheme.titleLarge?.color ?? Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
@@ -154,16 +164,19 @@ class ProfileScreen extends StatelessWidget {
           crossAxisSpacing: 12,
           children: [
             _buildAchievementTile(
-                Icons.local_fire_department_rounded, 'Streak Master'),
-            _buildAchievementTile(Icons.auto_stories_rounded, 'Bookworm'),
-            _buildAchievementTile(Icons.psychology_rounded, 'Deep Work'),
+                context, Icons.local_fire_department_rounded, 'Streak Master'),
+            _buildAchievementTile(
+                context, Icons.auto_stories_rounded, 'Bookworm'),
+            _buildAchievementTile(
+                context, Icons.psychology_rounded, 'Deep Work'),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildAchievementTile(IconData icon, String label) {
+  Widget _buildAchievementTile(
+      BuildContext context, IconData icon, String label) {
     return PremiumGlassContainer(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -173,27 +186,33 @@ class ProfileScreen extends StatelessWidget {
           Text(
             label,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Theme.of(context).textTheme.bodyMedium?.color ??
+                    Colors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSettingsList() {
+  Widget _buildSettingsList(BuildContext context) {
     return Column(
       children: [
-        _buildSettingsItem(Icons.person_outline_rounded, 'Account Details'),
-        _buildSettingsItem(Icons.notifications_none_rounded, 'Preferences'),
-        _buildSettingsItem(Icons.security_rounded, 'Privacy & Safety'),
-        _buildSettingsItem(Icons.help_outline_rounded, 'Support Hub'),
-        _buildSettingsItem(Icons.logout_rounded, 'Logout', isDestructive: true),
+        _buildSettingsItem(
+            context, Icons.person_outline_rounded, 'Account Details'),
+        _buildSettingsItem(
+            context, Icons.notifications_none_rounded, 'Preferences'),
+        _buildSettingsItem(context, Icons.security_rounded, 'Privacy & Safety'),
+        _buildSettingsItem(context, Icons.help_outline_rounded, 'Support Hub'),
+        _buildSettingsItem(context, Icons.logout_rounded, 'Logout',
+            isDestructive: true),
       ],
     );
   }
 
-  Widget _buildSettingsItem(IconData icon, String title,
+  Widget _buildSettingsItem(BuildContext context, IconData icon, String title,
       {bool isDestructive = false}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -205,12 +224,17 @@ class ProfileScreen extends StatelessWidget {
           title: Text(
             title,
             style: TextStyle(
-              color: isDestructive ? Colors.redAccent : Colors.white,
+              color: isDestructive
+                  ? Colors.redAccent
+                  : (Theme.of(context).textTheme.bodyLarge?.color ??
+                      Colors.white),
               fontWeight: FontWeight.w600,
             ),
           ),
           trailing: Icon(Icons.chevron_right_rounded,
-              color: Colors.white.withValues(alpha: 0.2)),
+              color:
+                  (Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white)
+                      .withValues(alpha: 0.2)),
         ),
       ),
     );

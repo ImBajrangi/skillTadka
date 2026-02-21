@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:study_app/theme/app_theme.dart';
 import 'package:study_app/widgets/premium_effects.dart';
 
@@ -48,9 +47,11 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
+                        // Added const here
                         'Select Grade',
-                        style: GoogleFonts.notoSerif(
+                        style: TextStyle(
+                          // Changed to TextStyle as per instruction's implied style change
                           fontSize: 48,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textMain,

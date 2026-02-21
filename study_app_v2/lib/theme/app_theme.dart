@@ -10,13 +10,22 @@ class AppColors {
   // Background & Surface (Stitch Dark Mode)
   static const Color bgDark = Color(0xFF111827); // Charcoal
   static const Color surface = Color(0xFF1F2937); // Slate Card
-  static const Color surfaceDark = Color(0xFF111827); // Same as BG
   static const Color border = Color(0xFF374151); // Slate Border
+  static const Color surfaceDark = Color(0xFF111827); // Same as BG
+
+  // Light Theme Palette (PadhLe Hub Light)
+  static const Color bgCream = Color(0xFFFDFCF8); // Soft Light Background
+  static const Color bgLight = bgCream; // Alias for compatibility
+  static const Color surfaceLight = Color(0xFFFFFFFF); // Pure White Card
+  static const Color borderLight = Color(0xFFE5E7EB); // Gray 200 Border
 
   // Text Tokens
   static const Color textMain = Color(0xFFF3F4F6); // Gray 100
   static const Color textSecondary = Color(0xFF9CA3AF); // Gray 400
   static const Color textOffWhite = Color(0xFFE5E7EB); // Gray 200
+
+  static const Color textMainLight = Color(0xFF111827); // Dark Slate
+  static const Color textSecondaryLight = Color(0xFF4B5563); // Gray 600
 
   // Glows & Shadows
   static List<BoxShadow> emeraldGlow = [
@@ -38,13 +47,66 @@ class AppColors {
   // Legacy/Reference (to be phased out)
   static const Color accentBlue = Color(0xFF3B82F6);
   static const Color accentPurple = Color(0xFFA855F7);
-  static const Color bgCream = bgDark;
-  static const Color bgLight = bgDark;
   static const Color accentOrange = Color(0xFFF97316);
 }
 
 class AppTheme {
   static const double borderRadius = 12.0;
+
+  static ThemeData get lightTheme {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      primaryColor: AppColors.primary,
+      scaffoldBackgroundColor: AppColors.bgCream,
+      colorScheme: const ColorScheme.light(
+        primary: AppColors.primary,
+        secondary: AppColors.primaryAction,
+        surface: AppColors.surfaceLight,
+        onPrimary: Colors.white,
+      ),
+      textTheme: TextTheme(
+        displayLarge: GoogleFonts.robotoMono(
+          color: AppColors.textMainLight,
+          fontWeight: FontWeight.bold,
+          fontSize: 32,
+          letterSpacing: -1.0,
+        ),
+        headlineMedium: GoogleFonts.robotoMono(
+          color: AppColors.textMainLight,
+          fontWeight: FontWeight.w600,
+          fontSize: 24,
+        ),
+        bodyLarge: GoogleFonts.inter(
+          color: AppColors.textMainLight,
+          fontSize: 16,
+        ),
+        bodyMedium: GoogleFonts.inter(
+          color: AppColors.textSecondaryLight,
+          fontSize: 14,
+        ),
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        iconTheme: IconThemeData(color: AppColors.textMainLight),
+        titleTextStyle: TextStyle(
+          color: AppColors.textMainLight,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      cardTheme: CardThemeData(
+        color: AppColors.surfaceLight,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+          side: const BorderSide(color: AppColors.borderLight, width: 1),
+        ),
+        elevation: 0,
+      ),
+    );
+  }
 
   static ThemeData get darkTheme {
     return ThemeData(

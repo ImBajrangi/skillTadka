@@ -11,26 +11,26 @@ class StatisticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(24, 80, 24, 120),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
+            _buildHeader(context),
             const SizedBox(height: 32),
-            _buildOverallProgress(),
+            _buildOverallProgress(context),
             const SizedBox(height: 32),
             _buildSubjectDistribution(context),
             const SizedBox(height: 32),
-            _buildActivityHeatmap(),
+            _buildActivityHeatmap(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -44,10 +44,11 @@ class StatisticsScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        const Text(
+        Text(
           'Your Growth',
           style: TextStyle(
-            color: AppColors.textMain,
+            color: Theme.of(context).textTheme.displayLarge?.color ??
+                AppColors.textMain,
             fontSize: 32,
             fontWeight: FontWeight.bold,
             letterSpacing: -0.5,
@@ -56,13 +57,16 @@ class StatisticsScreen extends StatelessWidget {
         const SizedBox(height: 8),
         Container(
           height: 1,
-          color: AppColors.border.withValues(alpha: 0.5),
+          color: (Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.border
+                  : AppColors.borderLight)
+              .withValues(alpha: 0.5),
         ),
       ],
     );
   }
 
-  Widget _buildOverallProgress() {
+  Widget _buildOverallProgress(BuildContext context) {
     return PremiumGlassContainer(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -83,7 +87,9 @@ class StatisticsScreen extends StatelessWidget {
                     canScaleToFit: true,
                     axisLineStyle: AxisLineStyle(
                       thickness: 20,
-                      color: Colors.white.withValues(alpha: 0.05),
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white.withValues(alpha: 0.05)
+                          : Colors.black.withValues(alpha: 0.05),
                       cornerStyle: CornerStyle.bothCurve,
                     ),
                     pointers: <GaugePointer>[
@@ -108,10 +114,14 @@ class StatisticsScreen extends StatelessWidget {
                           children: [
                             Text(
                               '${(MockData.dailyGoalProgress * 100).toInt()}%',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 32,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge
+                                        ?.color ??
+                                    Colors.white,
                               ),
                             ),
                             const Text(
@@ -137,9 +147,9 @@ class StatisticsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStatTile('Streak', '${MockData.userStreak}d'),
-                _buildStatTile('XP Earned', '${MockData.userXP}'),
-                _buildStatTile('Level', '${MockData.userLevel}'),
+                _buildStatTile(context, 'Streak', '${MockData.userStreak}d'),
+                _buildStatTile(context, 'XP Earned', '${MockData.userXP}'),
+                _buildStatTile(context, 'Level', '${MockData.userLevel}'),
               ],
             ),
           ],
@@ -148,13 +158,13 @@ class StatisticsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatTile(String label, String value) {
+  Widget _buildStatTile(BuildContext context, String label, String value) {
     return Column(
       children: [
         Text(
           value,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -176,21 +186,22 @@ class StatisticsScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Subject distribution',
           style: TextStyle(
-            color: Colors.white,
+            color:
+                Theme.of(context).textTheme.titleLarge?.color ?? Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 16),
-        ...MockData.subjects.map((s) => _buildSubjectBar(s)),
+        ...MockData.subjects.map((s) => _buildSubjectBar(context, s)),
       ],
     );
   }
 
-  Widget _buildSubjectBar(Map<String, dynamic> subject) {
+  Widget _buildSubjectBar(BuildContext context, Map<String, dynamic> subject) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Column(
@@ -205,8 +216,10 @@ class StatisticsScreen extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     subject['name'] as String,
-                    style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyLarge?.color ??
+                            Colors.white,
+                        fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
@@ -224,7 +237,9 @@ class StatisticsScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: subject['progress'] as double,
-              backgroundColor: Colors.white.withValues(alpha: 0.05),
+              backgroundColor: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white.withValues(alpha: 0.05)
+                  : Colors.black.withValues(alpha: 0.05),
               valueColor:
                   AlwaysStoppedAnimation<Color>(subject['color'] as Color),
               minHeight: 6,
@@ -235,17 +250,19 @@ class StatisticsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActivityHeatmap() {
+  Widget _buildActivityHeatmap(BuildContext context) {
     return PremiumGlassContainer(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Activity Heatmap',
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Theme.of(context).textTheme.titleMedium?.color ??
+                      Colors.white,
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             // Simplied heatmap visualization for brevity
@@ -257,11 +274,15 @@ class StatisticsScreen extends StatelessWidget {
                   width: 25,
                   height: 25,
                   decoration: BoxDecoration(
-                    color:
-                        index % 5 == 0 ? AppColors.primary : AppColors.surface,
+                    color: index % 5 == 0
+                        ? AppColors.primary
+                        : Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(4),
-                    border:
-                        Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                    border: Border.all(
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white.withValues(alpha: 0.05)
+                          : AppColors.borderLight,
+                    ),
                   ),
                 );
               }),
