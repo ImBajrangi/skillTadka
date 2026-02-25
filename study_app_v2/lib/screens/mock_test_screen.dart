@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../theme/app_theme.dart';
+import '../utils/sacred_styles.dart';
 
 class MockTestScreen extends StatelessWidget {
   const MockTestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text('Mock Test: Quantum Mechanics'),
+        title: Text(
+          'Mock Test: Quantum Mechanics',
+          style: SacredStyles.withColor(
+              SacredStyles.inter16.copyWith(fontWeight: FontWeight.bold),
+              theme.colorScheme.onSurface),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -18,9 +26,9 @@ class MockTestScreen extends StatelessWidget {
           children: [
             _buildResultCard(context),
             const SizedBox(height: 32),
-            _buildSectionHeader('Subject Analysis'),
+            _buildSectionHeader(context, 'Subject Analysis'),
             const SizedBox(height: 20),
-            _buildSubjectBreakdown(),
+            _buildSubjectBreakdown(context),
             const SizedBox(height: 32),
             _buildActionButtons(context),
           ],
@@ -30,19 +38,24 @@ class MockTestScreen extends StatelessWidget {
   }
 
   Widget _buildResultCard(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(32),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Column(
         children: [
-          const Text(
+          Text(
             'Overall Score',
-            style: TextStyle(
-                color: AppColors.textSecondary, fontWeight: FontWeight.bold),
+            style: SacredStyles.withColor(
+              SacredStyles.inter14.copyWith(fontWeight: FontWeight.bold),
+              isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
+            ),
           ),
           const SizedBox(height: 24),
           SizedBox(
@@ -76,20 +89,19 @@ class MockTestScreen extends StatelessWidget {
                       widget: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
+                          Text(
                             '85%',
-                            style: TextStyle(
-                              fontSize: 36,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textMain,
+                            style: SacredStyles.withColor(
+                              SacredStyles.display32Bold.copyWith(fontSize: 36),
+                              theme.colorScheme.onSurface,
                             ),
                           ),
                           Text(
                             'Excellent!',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: AppColors.primary.withValues(alpha: 0.8),
-                              fontWeight: FontWeight.bold,
+                            style: SacredStyles.withColor(
+                              SacredStyles.inter14
+                                  .copyWith(fontWeight: FontWeight.bold),
+                              AppColors.primary.withValues(alpha: 0.8),
                             ),
                           ),
                         ],
@@ -105,33 +117,36 @@ class MockTestScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(BuildContext context, String title) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: const TextStyle(
-            color: AppColors.textMain,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: SacredStyles.withColor(
+            SacredStyles.inter16
+                .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+            theme.colorScheme.onSurface,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildSubjectBreakdown() {
+  Widget _buildSubjectBreakdown(BuildContext context) {
     return Column(
       children: [
-        _buildStatRow('Concept Clarity', 0.9, Colors.green),
-        _buildStatRow('Numerical Accuracy', 0.75, Colors.blue),
-        _buildStatRow('Speed', 0.82, Colors.orange),
+        _buildStatRow(context, 'Concept Clarity', 0.9, Colors.green),
+        _buildStatRow(context, 'Numerical Accuracy', 0.75, Colors.blue),
+        _buildStatRow(context, 'Speed', 0.82, Colors.orange),
       ],
     );
   }
 
-  Widget _buildStatRow(String label, double value, Color color) {
+  Widget _buildStatRow(
+      BuildContext context, String label, double value, Color color) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -140,10 +155,20 @@ class MockTestScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(label,
-                  style: const TextStyle(color: AppColors.textOffWhite)),
-              Text('${(value * 100).toInt()}%',
-                  style: TextStyle(color: color, fontWeight: FontWeight.bold)),
+              Text(
+                label,
+                style: SacredStyles.withColor(
+                  SacredStyles.inter14,
+                  theme.colorScheme.onSurface,
+                ),
+              ),
+              Text(
+                '${(value * 100).toInt()}%',
+                style: SacredStyles.withColor(
+                  SacredStyles.inter14.copyWith(fontWeight: FontWeight.bold),
+                  color,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 8),
@@ -162,6 +187,9 @@ class MockTestScreen extends StatelessWidget {
   }
 
   Widget _buildActionButtons(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Column(
       children: [
         SizedBox(
@@ -175,17 +203,23 @@ class MockTestScreen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16)),
             ),
-            child: const Text('Back to Unit',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            child: Text(
+              'Back to Unit',
+              style: SacredStyles.withColor(
+                  SacredStyles.inter16.copyWith(fontWeight: FontWeight.bold),
+                  Colors.white),
+            ),
           ),
         ),
         const SizedBox(height: 12),
         TextButton(
           onPressed: () {},
-          child: const Text(
+          child: Text(
             'Review Mistakes',
-            style: TextStyle(
-                color: AppColors.textSecondary, fontWeight: FontWeight.bold),
+            style: SacredStyles.withColor(
+              SacredStyles.inter14.copyWith(fontWeight: FontWeight.bold),
+              isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
+            ),
           ),
         ),
       ],

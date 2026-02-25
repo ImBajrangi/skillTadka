@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../utils/mock_data.dart';
 import '../widgets/premium_effects.dart';
+import '../utils/sacred_styles.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(24, 80, 24, 120),
         child: Column(
@@ -30,42 +32,36 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'USER PROFILE',
-          style: GoogleFonts.robotoMono(
-            color: AppColors.primary,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2.0,
+          style: SacredStyles.withColor(
+            SacredStyles.mono12Bold.copyWith(letterSpacing: 2.0),
+            AppColors.primary,
           ),
         ),
         const SizedBox(height: 8),
         Text(
           'Settings',
-          style: TextStyle(
-            color: Theme.of(context).textTheme.displayLarge?.color ??
-                AppColors.textMain,
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.5,
+          style: SacredStyles.withColor(
+            SacredStyles.display32Bold,
+            theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
-        Container(
-          height: 1,
-          color: (Theme.of(context).brightness == Brightness.dark
-                  ? AppColors.border
-                  : AppColors.borderLight)
-              .withValues(alpha: 0.5),
-        ),
+        Divider(height: 1, color: theme.colorScheme.outline),
       ],
     );
   }
 
   Widget _buildProfileHeader(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Column(
       children: [
         Container(
@@ -84,18 +80,16 @@ class ProfileScreen extends StatelessWidget {
         const SizedBox(height: 16),
         Text(
           'Alex Johnson',
-          style: TextStyle(
-            color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+          style: SacredStyles.withColor(
+            SacredStyles.inter24Bold,
+            theme.colorScheme.onSurface,
           ),
         ),
         Text(
           'Grade 11 • Arts & Sciences',
-          style: TextStyle(
-            color: AppColors.textSecondary,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
+          style: SacredStyles.withColor(
+            SacredStyles.inter14.copyWith(fontWeight: FontWeight.w600),
+            isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
           ),
         ),
         const SizedBox(height: 24),
@@ -113,16 +107,14 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildHeaderBadge(BuildContext context, String text, IconData icon) {
+    final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Colors.white.withValues(alpha: 0.05)
-              : AppColors.borderLight,
-        ),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Row(
         children: [
@@ -130,11 +122,9 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             text,
-            style: TextStyle(
-              color:
-                  Theme.of(context).textTheme.bodyMedium?.color ?? Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
+            style: SacredStyles.withColor(
+              SacredStyles.inter12.copyWith(fontWeight: FontWeight.bold),
+              theme.colorScheme.onSurface,
             ),
           ),
         ],
@@ -143,16 +133,16 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildAchievementGrid(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Achievements',
-          style: TextStyle(
-            color:
-                Theme.of(context).textTheme.titleLarge?.color ?? Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+          style: SacredStyles.withColor(
+            SacredStyles.inter18Bold,
+            theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 16),
@@ -177,6 +167,8 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildAchievementTile(
       BuildContext context, IconData icon, String label) {
+    final theme = Theme.of(context);
+
     return PremiumGlassContainer(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -186,11 +178,10 @@ class ProfileScreen extends StatelessWidget {
           Text(
             label,
             textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Theme.of(context).textTheme.bodyMedium?.color ??
-                    Colors.white,
-                fontSize: 10,
-                fontWeight: FontWeight.bold),
+            style: SacredStyles.withColor(
+              SacredStyles.inter10Bold,
+              theme.colorScheme.onSurface,
+            ),
           ),
         ],
       ),
@@ -214,27 +205,27 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildSettingsItem(BuildContext context, IconData icon, String title,
       {bool isDestructive = false}) {
+    final theme = Theme.of(context);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       child: PremiumGlassContainer(
         child: ListTile(
           leading: Icon(icon,
-              color:
-                  isDestructive ? Colors.redAccent : AppColors.textSecondary),
-          title: Text(
-            title,
-            style: TextStyle(
               color: isDestructive
                   ? Colors.redAccent
-                  : (Theme.of(context).textTheme.bodyLarge?.color ??
-                      Colors.white),
-              fontWeight: FontWeight.w600,
+                  : (theme.brightness == Brightness.dark
+                      ? AppColors.textSecondary
+                      : AppColors.textSecondaryLight)),
+          title: Text(
+            title,
+            style: SacredStyles.withColor(
+              SacredStyles.inter16.copyWith(fontWeight: FontWeight.w600),
+              isDestructive ? Colors.redAccent : theme.colorScheme.onSurface,
             ),
           ),
           trailing: Icon(Icons.chevron_right_rounded,
-              color:
-                  (Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white)
-                      .withValues(alpha: 0.2)),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.2)),
         ),
       ),
     );

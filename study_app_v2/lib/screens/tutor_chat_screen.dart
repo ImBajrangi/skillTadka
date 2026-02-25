@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../utils/sacred_styles.dart';
 
 class TutorChatScreen extends StatelessWidget {
   const TutorChatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Column(
+        title: Column(
           children: [
-            Text('AI Tutor',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            Text('Online • Always here to help',
-                style: TextStyle(fontSize: 10, color: Colors.green)),
+            Text(
+              'AI Tutor',
+              style: SacredStyles.withColor(
+                SacredStyles.inter16.copyWith(fontWeight: FontWeight.bold),
+                theme.colorScheme.onSurface,
+              ),
+            ),
+            Text(
+              'Online • Always here to help',
+              style: SacredStyles.withColor(
+                SacredStyles.inter10Bold,
+                Colors.green,
+              ),
+            ),
           ],
         ),
       ),
@@ -25,27 +38,34 @@ class TutorChatScreen extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               children: [
                 _buildChatBubble(
+                  context,
                   'Hello Alex! I see you\'re studying Quantum Mechanics. How can I assist you today?',
                   isTutor: true,
                 ),
                 _buildChatBubble(
+                  context,
                   'I\'m having trouble understanding the Wave Function collapse. Can you explain it simply?',
                   isTutor: false,
                 ),
                 _buildChatBubble(
+                  context,
                   'Of course! Imagine a coin spinning on a table. While it\'s spinning, it\'s both heads and tails at once (Superposition). Collapse happens when you stop the coin and it finally is one or the other.',
                   isTutor: true,
                 ),
               ],
             ),
           ),
-          _buildChatInput(),
+          _buildChatInput(context),
         ],
       ),
     );
   }
 
-  Widget _buildChatBubble(String text, {required bool isTutor}) {
+  Widget _buildChatBubble(BuildContext context, String text,
+      {required bool isTutor}) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Align(
       alignment: isTutor ? Alignment.centerLeft : Alignment.centerRight,
       child: Container(
@@ -55,7 +75,7 @@ class TutorChatScreen extends StatelessWidget {
         decoration: BoxDecoration(
           color: isTutor
               ? AppColors.primary.withValues(alpha: 0.1)
-              : AppColors.surface,
+              : theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(20).copyWith(
             bottomLeft:
                 isTutor ? const Radius.circular(0) : const Radius.circular(20),
@@ -65,26 +85,31 @@ class TutorChatScreen extends StatelessWidget {
           border: Border.all(
             color: isTutor
                 ? AppColors.primary.withValues(alpha: 0.2)
-                : Colors.white.withValues(alpha: 0.05),
+                : theme.colorScheme.outline,
           ),
         ),
         child: Text(
           text,
-          style: TextStyle(
-            color: isTutor ? AppColors.textMain : AppColors.textOffWhite,
-            height: 1.4,
-          ),
+          style: SacredStyles.withColor(
+            SacredStyles.inter14,
+            isTutor
+                ? theme.colorScheme.onSurface
+                : (isDark ? AppColors.textOffWhite : AppColors.textMain),
+          ).copyWith(height: 1.4),
         ),
       ),
     );
   }
 
-  Widget _buildChatInput() {
+  Widget _buildChatInput(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 40),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: theme.colorScheme.surface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Row(
         children: [
@@ -92,14 +117,20 @@ class TutorChatScreen extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: AppColors.bgDark,
+                color: theme.scaffoldBackgroundColor,
                 borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: theme.colorScheme.outline),
               ),
-              child: const TextField(
-                style: TextStyle(color: Colors.white),
+              child: TextField(
+                style: TextStyle(color: theme.colorScheme.onSurface),
                 decoration: InputDecoration(
                   hintText: 'Ask your tutor...',
-                  hintStyle: TextStyle(color: AppColors.textSecondary),
+                  hintStyle: SacredStyles.withColor(
+                    SacredStyles.inter14,
+                    theme.brightness == Brightness.dark
+                        ? AppColors.textSecondary
+                        : AppColors.textSecondaryLight,
+                  ),
                   border: InputBorder.none,
                 ),
               ),

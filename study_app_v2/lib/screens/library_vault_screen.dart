@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bento_card.dart';
 import '../utils/mock_data.dart';
+import '../utils/sacred_styles.dart';
 
 class LibraryVaultScreen extends StatelessWidget {
   const LibraryVaultScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(24, 80, 24, 120),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(),
+            _buildHeader(context),
             const SizedBox(height: 40),
-            _buildSectionHeader('Quick Access'),
+            _buildSectionHeader(context, 'Quick Access'),
             const SizedBox(height: 20),
             _buildQuickAccessBento(),
             const SizedBox(height: 40),
-            _buildSectionHeader('Categories'),
+            _buildSectionHeader(context, 'Categories'),
             const SizedBox(height: 20),
-            _buildCategoriesList(),
+            _buildCategoriesList(context),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -42,7 +47,7 @@ class LibraryVaultScreen extends StatelessWidget {
               height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(color: AppColors.border),
+                border: Border.all(color: theme.colorScheme.outline),
                 image: const DecorationImage(
                   image: NetworkImage(
                       'https://lh3.googleusercontent.com/aida-public/AB6AXuBqUWP7HM6rEHnI5McRApJipQP5ABiMvZt7lTycq939qkZCO7NM8Aqb-aAmcIPCUpm0pib7oQMJh-xCec7v8lpVmCegcqW75UA30TXPusU062bT4alEykfyED8stqFy_Y7Chq8To4Zxt0owfMK2OWN4eKYDqr2Vm786b5CGPWn8jFPboyVUnCR2cgAsIM-11WNXF-IzViRvMVZRIfIO0DopIp_Zwkit7O8FeztCOoD-FmZfx-HxSkdIfIQBv7jp-Q_tUtg5N7GReo4'),
@@ -58,22 +63,20 @@ class LibraryVaultScreen extends StatelessWidget {
                   children: [
                     Text(
                       'ALEX',
-                      style: GoogleFonts.robotoMono(
-                        color: AppColors.textMain,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
+                      style: SacredStyles.withColor(
+                        SacredStyles.mono14Bold,
+                        theme.colorScheme.onSurface,
                       ),
                     ),
                   ],
                 ),
                 Text(
                   'GRADE 11 • SCIENCE STREAM',
-                  style: GoogleFonts.robotoMono(
-                    color: AppColors.textSecondary,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.0,
+                  style: SacredStyles.withColor(
+                    SacredStyles.mono10Bold,
+                    isDark
+                        ? AppColors.textSecondary
+                        : AppColors.textSecondaryLight,
                   ),
                 ),
               ],
@@ -82,29 +85,38 @@ class LibraryVaultScreen extends StatelessWidget {
         ),
         Row(
           children: [
-            _buildHeaderAction(Icons.search_rounded),
+            _buildHeaderAction(context, Icons.search_rounded),
             const SizedBox(width: 8),
-            _buildHeaderAction(Icons.notifications_none_rounded),
+            _buildHeaderAction(context, Icons.notifications_none_rounded),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildHeaderAction(IconData icon) {
+  Widget _buildHeaderAction(BuildContext context, IconData icon) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       width: 36,
       height: 36,
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
-      child: Icon(icon, color: AppColors.textSecondary, size: 20),
+      child: Icon(icon,
+          color:
+              isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
+          size: 20),
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(BuildContext context, String title) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -113,28 +125,26 @@ class LibraryVaultScreen extends StatelessWidget {
           children: [
             Text(
               title.toUpperCase(),
-              style: GoogleFonts.robotoMono(
-                color: AppColors.textSecondary,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2.0,
-              ),
+              style: SacredStyles.withColor(
+                SacredStyles.mono12Bold,
+                isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
+              ).copyWith(letterSpacing: 2.0),
             ),
-            const Icon(Icons.manage_search_rounded,
-                color: AppColors.textSecondary, size: 18),
+            Icon(Icons.manage_search_rounded,
+                color: isDark
+                    ? AppColors.textSecondary
+                    : AppColors.textSecondaryLight,
+                size: 18),
           ],
         ),
         const SizedBox(height: 8),
-        Container(
-          height: 1,
-          color: AppColors.border.withValues(alpha: 0.5),
-        ),
+        Divider(height: 1, color: theme.colorScheme.outline),
       ],
     );
   }
 
   Widget _buildQuickAccessBento() {
-    return Row(
+    return const Row(
       children: [
         Expanded(
           child: BentoCard(
@@ -145,7 +155,7 @@ class LibraryVaultScreen extends StatelessWidget {
             height: 120,
           ),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: 16),
         Expanded(
           child: BentoCard(
             title: 'Saved',
@@ -159,10 +169,11 @@ class LibraryVaultScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoriesList() {
+  Widget _buildCategoriesList(BuildContext context) {
     return Column(
       children: MockData.libraryCategories
           .map((cat) => _buildCategoryItem(
+                context,
                 cat['title'] as String,
                 '${cat['count']} Materials',
                 cat['icon'] as IconData,
@@ -172,15 +183,18 @@ class LibraryVaultScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryItem(
-      String title, String count, IconData icon, Color color) {
+  Widget _buildCategoryItem(BuildContext context, String title, String count,
+      IconData icon, Color color) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        border: Border.all(color: theme.colorScheme.outline),
       ),
       child: Row(
         children: [
@@ -199,24 +213,28 @@ class LibraryVaultScreen extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: AppColors.textMain,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                  style: SacredStyles.withColor(
+                    SacredStyles.inter16
+                        .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+                    theme.colorScheme.onSurface,
                   ),
                 ),
                 Text(
                   count,
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 12,
+                  style: SacredStyles.withColor(
+                    SacredStyles.inter12,
+                    isDark
+                        ? AppColors.textSecondary
+                        : AppColors.textSecondaryLight,
                   ),
                 ),
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded,
-              color: AppColors.textSecondary),
+          Icon(Icons.chevron_right_rounded,
+              color: isDark
+                  ? AppColors.textSecondary
+                  : AppColors.textSecondaryLight),
         ],
       ),
     );

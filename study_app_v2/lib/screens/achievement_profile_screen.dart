@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:study_app/theme/app_theme.dart';
 import 'package:study_app/widgets/premium_effects.dart';
+import '../utils/sacred_styles.dart';
 
 class AchievementProfileScreen extends StatelessWidget {
   const AchievementProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.bgCream,
+      backgroundColor: theme.scaffoldBackgroundColor,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textMain),
+          icon: Icon(Icons.arrow_back, color: theme.colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
-              icon: const Icon(Icons.settings_outlined,
-                  color: AppColors.textMain),
+              icon: Icon(Icons.settings_outlined,
+                  color: theme.colorScheme.onSurface),
               onPressed: () {}),
         ],
       ),
@@ -29,11 +32,11 @@ class AchievementProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 const SizedBox(height: 120),
-                _buildProfileHeader(),
+                _buildProfileHeader(context),
                 const SizedBox(height: 40),
-                _buildStatsBentoGrid(),
+                _buildStatsBentoGrid(context),
                 const SizedBox(height: 40),
-                _buildAchievementsSection(),
+                _buildAchievementsSection(context),
                 const SizedBox(height: 120),
               ],
             ),
@@ -43,7 +46,10 @@ class AchievementProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileHeader() {
+  Widget _buildProfileHeader(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Column(
       children: [
         Stack(
@@ -72,61 +78,63 @@ class AchievementProfileScreen extends StatelessWidget {
                   color: AppColors.primary,
                   shape: BoxShape.circle,
                 ),
-                child:
-                    const Icon(Icons.edit, size: 16, color: AppColors.textMain),
+                child: const Icon(Icons.edit, size: 16, color: Colors.white),
               ),
             ),
           ],
         ),
         const SizedBox(height: 24),
-        const Text(
+        Text(
           'Alex Johnson',
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.w900,
-            color: AppColors.textMain,
-            letterSpacing: -1,
+          style: SacredStyles.withColor(
+            SacredStyles.display32Bold
+                .copyWith(fontSize: 28, fontWeight: FontWeight.w900),
+            theme.colorScheme.onSurface,
           ),
         ),
-        const Text(
+        Text(
           'University Student • Grade 11',
-          style: TextStyle(
-            fontSize: 14,
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w500,
+          style: SacredStyles.withColor(
+            SacredStyles.inter14.copyWith(fontWeight: FontWeight.w500),
+            isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildStatsBentoGrid() {
+  Widget _buildStatsBentoGrid(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Performance',
-              style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textMain)),
+          Text(
+            'Performance',
+            style: SacredStyles.withColor(
+              SacredStyles.headline24SemiBold
+                  .copyWith(fontSize: 22, fontWeight: FontWeight.bold),
+              theme.colorScheme.onSurface,
+            ),
+          ),
           const SizedBox(height: 20),
           Row(
             children: [
               Expanded(
-                child: _buildBentoCard('14 Days', 'STREAK',
+                child: _buildBentoCard(context, '14 Days', 'STREAK',
                     Icons.local_fire_department, AppColors.primaryAction),
               ),
               const SizedBox(width: 16),
               Expanded(
-                child: _buildBentoCard('Level 12', 'RANK', Icons.military_tech,
-                    AppColors.accentPurple),
+                child: _buildBentoCard(context, 'Level 12', 'RANK',
+                    Icons.military_tech, AppColors.accentPurple),
               ),
             ],
           ),
           const SizedBox(height: 16),
           _buildBentoCardFull(
+              context,
               'Active Learner',
               'You are in the top 5% of grade 11 students.',
               Icons.trending_up,
@@ -136,13 +144,17 @@ class AchievementProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBentoCard(
-      String val, String label, IconData icon, Color accent) {
+  Widget _buildBentoCard(BuildContext context, String val, String label,
+      IconData icon, Color accent) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(32),
+        border: Border.all(color: theme.colorScheme.outline),
         boxShadow: [
           BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 15)
         ],
@@ -152,29 +164,37 @@ class AchievementProfileScreen extends StatelessWidget {
         children: [
           Icon(icon, color: accent, size: 28),
           const SizedBox(height: 16),
-          Text(val,
-              style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.textMain)),
-          Text(label,
-              style: const TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.textSecondary,
-                  letterSpacing: 1)),
+          Text(
+            val,
+            style: SacredStyles.withColor(
+              SacredStyles.display32Bold
+                  .copyWith(fontSize: 24, fontWeight: FontWeight.w900),
+              theme.colorScheme.onSurface,
+            ),
+          ),
+          Text(
+            label,
+            style: SacredStyles.withColor(
+              SacredStyles.mono10Bold.copyWith(fontWeight: FontWeight.w900),
+              isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildBentoCardFull(
-      String title, String desc, IconData icon, Color accent) {
+  Widget _buildBentoCardFull(BuildContext context, String title, String desc,
+      IconData icon, Color accent) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(32),
+        border: Border.all(color: theme.colorScheme.outline),
         boxShadow: [
           BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 15)
         ],
@@ -192,14 +212,22 @@ class AchievementProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textMain)),
-                Text(desc,
-                    style: const TextStyle(
-                        fontSize: 12, color: AppColors.textSecondary)),
+                Text(
+                  title,
+                  style: SacredStyles.withColor(
+                    SacredStyles.inter16.copyWith(fontWeight: FontWeight.bold),
+                    theme.colorScheme.onSurface,
+                  ),
+                ),
+                Text(
+                  desc,
+                  style: SacredStyles.withColor(
+                    SacredStyles.inter12,
+                    isDark
+                        ? AppColors.textSecondary
+                        : AppColors.textSecondaryLight,
+                  ),
+                ),
               ],
             ),
           ),
@@ -208,31 +236,38 @@ class AchievementProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAchievementsSection() {
+  Widget _buildAchievementsSection(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Achievements',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textMain)),
+          Text(
+            'Achievements',
+            style: SacredStyles.withColor(
+              SacredStyles.headline24SemiBold
+                  .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+              theme.colorScheme.onSurface,
+            ),
+          ),
           const SizedBox(height: 20),
           _buildAchievementItem(
+              context,
               'Elite Scholar',
               'Top 5% of students in Grade 11',
               Icons.workspace_premium,
               AppColors.primary),
           const SizedBox(height: 16),
           _buildAchievementItem(
+              context,
               'Consistency King',
               'Maintained 30 day study streak',
               Icons.local_fire_department,
               AppColors.primaryAction),
           const SizedBox(height: 16),
           _buildAchievementItem(
+              context,
               'Quiz Master',
               'Scored 100% in 5 consecutive quizzes',
               Icons.psychology,
@@ -242,13 +277,17 @@ class AchievementProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAchievementItem(
-      String title, String desc, IconData icon, Color color) {
+  Widget _buildAchievementItem(BuildContext context, String title, String desc,
+      IconData icon, Color color) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: theme.colorScheme.outline),
         boxShadow: [
           BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10)
         ],
@@ -268,14 +307,22 @@ class AchievementProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textMain)),
-                Text(desc,
-                    style: const TextStyle(
-                        fontSize: 12, color: AppColors.textSecondary)),
+                Text(
+                  title,
+                  style: SacredStyles.withColor(
+                    SacredStyles.inter16.copyWith(fontWeight: FontWeight.bold),
+                    theme.colorScheme.onSurface,
+                  ),
+                ),
+                Text(
+                  desc,
+                  style: SacredStyles.withColor(
+                    SacredStyles.inter12,
+                    isDark
+                        ? AppColors.textSecondary
+                        : AppColors.textSecondaryLight,
+                  ),
+                ),
               ],
             ),
           ),

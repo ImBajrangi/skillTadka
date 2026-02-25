@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:study_app/theme/app_theme.dart';
 import 'package:study_app/widgets/premium_effects.dart';
+import '../utils/sacred_styles.dart';
 
 class GradeSelectionScreen extends StatefulWidget {
   const GradeSelectionScreen({super.key});
@@ -15,8 +16,11 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.bgLight,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: Stack(
         children: [
           const GrainyTextureOverlay(opacity: 0.03),
@@ -38,7 +42,8 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: IconButton(
-                    icon: const Icon(Icons.arrow_back),
+                    icon: Icon(Icons.arrow_back,
+                        color: theme.colorScheme.onSurface),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ),
@@ -47,24 +52,23 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        // Added const here
+                      Text(
                         'Select Grade',
-                        style: TextStyle(
-                          // Changed to TextStyle as per instruction's implied style change
-                          fontSize: 48,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textMain,
-                          letterSpacing: -1,
+                        style: SacredStyles.withColor(
+                          SacredStyles.display32Bold.copyWith(
+                              fontSize: 48, fontWeight: FontWeight.bold),
+                          theme.colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 12),
-                      const Text(
+                      Text(
                         'Choose your current academic class to personalize your experience.',
-                        style: TextStyle(
-                            color: AppColors.textSecondary,
-                            fontSize: 16,
-                            height: 1.5),
+                        style: SacredStyles.withColor(
+                          SacredStyles.inter16,
+                          isDark
+                              ? AppColors.textSecondary
+                              : AppColors.textSecondaryLight,
+                        ).copyWith(height: 1.5),
                       ),
                     ],
                   ),
@@ -87,8 +91,14 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                         width: isSelected ? 240 : 180,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: isSelected ? AppColors.textMain : Colors.white,
+                          color: isSelected
+                              ? theme.colorScheme.onSurface
+                              : theme.colorScheme.surface,
                           borderRadius: BorderRadius.circular(32),
+                          border: Border.all(
+                              color: isSelected
+                                  ? Colors.transparent
+                                  : theme.colorScheme.outline),
                           boxShadow: isSelected
                               ? [
                                   BoxShadow(
@@ -100,12 +110,16 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                         ),
                         child: Text(
                           'Grade $grade',
-                          style: TextStyle(
-                            fontSize: isSelected ? 32 : 24,
-                            fontWeight: FontWeight.w900,
-                            color: isSelected
+                          style: SacredStyles.withColor(
+                            isSelected
+                                ? SacredStyles.display32Bold
+                                    .copyWith(fontSize: 32)
+                                : SacredStyles.headline24SemiBold,
+                            isSelected
                                 ? AppColors.primary
-                                : AppColors.textSecondary,
+                                : (isDark
+                                    ? AppColors.textSecondary
+                                    : AppColors.textSecondaryLight),
                           ),
                         ),
                       );
@@ -123,17 +137,19 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                         onPressed: () => Navigator.pop(context),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.textMain,
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(32)),
                           elevation: 10,
                           shadowColor: AppColors.primary.withValues(alpha: 0.5),
                         ),
-                        child: const Text('CONTINUE',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: 2)),
+                        child: Text(
+                          'CONTINUE',
+                          style: SacredStyles.withColor(
+                            SacredStyles.mono14Bold.copyWith(fontSize: 18),
+                            Colors.white,
+                          ).copyWith(letterSpacing: 2),
+                        ),
                       ),
                     ),
                   ),

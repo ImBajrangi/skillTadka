@@ -4,6 +4,7 @@ import '../theme/app_theme.dart';
 import '../widgets/premium_effects.dart';
 import '../widgets/glass_bottom_bar.dart';
 import '../providers/user_prefs_provider.dart';
+import '../utils/sacred_styles.dart';
 import 'library_vault_screen.dart';
 import 'modern_home_screen.dart';
 import 'statistics_screen.dart';
@@ -29,10 +30,11 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final userPrefs = ref.watch(userPrefsProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: theme.scaffoldBackgroundColor,
       extendBody: true,
       body: Stack(
         children: [
@@ -40,7 +42,7 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
             index: _currentIndex,
             children: _screens,
           ),
-          _buildFloatingModeToggle(userPrefs.isModernMode),
+          _buildFloatingModeToggle(context, userPrefs.isModernMode),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -63,7 +65,8 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
     );
   }
 
-  Widget _buildFloatingModeToggle(bool isModern) {
+  Widget _buildFloatingModeToggle(BuildContext context, bool isModern) {
+    final theme = Theme.of(context);
     return Positioned(
       top: 60,
       right: 24,
@@ -78,7 +81,7 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12)),
-              backgroundColor: AppColors.surface,
+              backgroundColor: theme.colorScheme.surface,
             ),
           );
         },
@@ -88,6 +91,10 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
           borderRadius: BorderRadius.circular(20),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: theme.colorScheme.outline),
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -96,11 +103,10 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
                 const SizedBox(width: 8),
                 Text(
                   isModern ? 'MODERN' : 'BEGINNER',
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1),
+                  style: SacredStyles.withColor(
+                    SacredStyles.mono10Bold,
+                    theme.colorScheme.onSurface,
+                  ).copyWith(letterSpacing: 1),
                 ),
               ],
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
+import '../utils/sacred_styles.dart';
 
 class BentoCard extends StatelessWidget {
   final String title;
@@ -28,6 +28,9 @@ class BentoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -36,12 +39,10 @@ class BentoCard extends StatelessWidget {
           minHeight: height ?? 0,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(AppTheme.borderRadius),
           border: Border.all(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? AppColors.border
-                : AppColors.borderLight,
+            color: theme.colorScheme.outline,
           ),
           boxShadow: isGlow ? AppColors.emeraldGlow : AppColors.cardShadow,
         ),
@@ -83,11 +84,9 @@ class BentoCard extends StatelessWidget {
                     title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.robotoMono(
-                      color: Theme.of(context).textTheme.bodyLarge?.color ??
-                          AppColors.textMain,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                    style: SacredStyles.withColor(
+                      SacredStyles.mono14Bold,
+                      theme.colorScheme.onSurface,
                     ),
                   ),
                   if (subtitle != null) ...[
@@ -96,11 +95,12 @@ class BentoCard extends StatelessWidget {
                       subtitle!,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.inter(
-                        color: Theme.of(context).textTheme.bodyMedium?.color ??
-                            AppColors.textSecondary,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
+                      style: SacredStyles.withColor(
+                        SacredStyles.inter10Bold
+                            .copyWith(fontWeight: FontWeight.w500),
+                        isDark
+                            ? AppColors.textSecondary
+                            : AppColors.textSecondaryLight,
                       ),
                     ),
                   ],

@@ -103,22 +103,23 @@ class PremiumGlassContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final effectiveRadius =
         borderRadius ?? BorderRadius.circular(AppTheme.borderRadius);
+
     return ClipRRect(
       borderRadius: effectiveRadius,
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark
+            color: isDark
                 ? Colors.white.withValues(alpha: opacity)
                 : Colors.white.withValues(alpha: opacity + 0.5),
             borderRadius: effectiveRadius,
             border: Border.all(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? AppColors.border
-                  : AppColors.borderLight,
+              color: theme.colorScheme.outline,
             ),
           ),
           child: child,

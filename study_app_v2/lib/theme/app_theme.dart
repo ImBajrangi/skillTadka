@@ -59,11 +59,18 @@ class AppTheme {
       brightness: Brightness.light,
       primaryColor: AppColors.primary,
       scaffoldBackgroundColor: AppColors.bgCream,
+      dividerTheme: const DividerThemeData(
+        color: AppColors.borderLight,
+        thickness: 1,
+        space: 1,
+      ),
       colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         secondary: AppColors.primaryAction,
         surface: AppColors.surfaceLight,
         onPrimary: Colors.white,
+        onSurface: AppColors.textMainLight,
+        outline: AppColors.borderLight,
       ),
       textTheme: TextTheme(
         displayLarge: GoogleFonts.robotoMono(
@@ -114,11 +121,18 @@ class AppTheme {
       brightness: Brightness.dark,
       primaryColor: AppColors.primary,
       scaffoldBackgroundColor: AppColors.bgDark,
+      dividerTheme: const DividerThemeData(
+        color: AppColors.border,
+        thickness: 1,
+        space: 1,
+      ),
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primary,
         secondary: AppColors.primaryAction,
         surface: AppColors.surface,
         onPrimary: Colors.white,
+        onSurface: AppColors.textMain,
+        outline: AppColors.border,
       ),
       // Specialized Typography
       textTheme: TextTheme(
@@ -157,6 +171,7 @@ class AppTheme {
         color: AppColors.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
+          side: const BorderSide(color: AppColors.border, width: 1),
         ),
         elevation: 0,
       ),

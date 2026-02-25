@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import '../theme/app_theme.dart';
 import '../utils/mock_data.dart';
 import '../widgets/premium_effects.dart';
+import '../utils/sacred_styles.dart';
 
 class StatisticsScreen extends StatelessWidget {
   const StatisticsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(24, 80, 24, 120),
         child: Column(
@@ -31,42 +33,36 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'STATISTICS',
-          style: GoogleFonts.robotoMono(
-            color: AppColors.primary,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2.0,
+          style: SacredStyles.withColor(
+            SacredStyles.mono12Bold.copyWith(letterSpacing: 2.0),
+            AppColors.primary,
           ),
         ),
         const SizedBox(height: 8),
         Text(
           'Your Growth',
-          style: TextStyle(
-            color: Theme.of(context).textTheme.displayLarge?.color ??
-                AppColors.textMain,
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            letterSpacing: -0.5,
+          style: SacredStyles.withColor(
+            SacredStyles.display32Bold,
+            theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
-        Container(
-          height: 1,
-          color: (Theme.of(context).brightness == Brightness.dark
-                  ? AppColors.border
-                  : AppColors.borderLight)
-              .withValues(alpha: 0.5),
-        ),
+        Divider(height: 1, color: theme.colorScheme.outline),
       ],
     );
   }
 
   Widget _buildOverallProgress(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return PremiumGlassContainer(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -87,7 +83,7 @@ class StatisticsScreen extends StatelessWidget {
                     canScaleToFit: true,
                     axisLineStyle: AxisLineStyle(
                       thickness: 20,
-                      color: Theme.of(context).brightness == Brightness.dark
+                      color: isDark
                           ? Colors.white.withValues(alpha: 0.05)
                           : Colors.black.withValues(alpha: 0.05),
                       cornerStyle: CornerStyle.bothCurve,
@@ -114,23 +110,20 @@ class StatisticsScreen extends StatelessWidget {
                           children: [
                             Text(
                               '${(MockData.dailyGoalProgress * 100).toInt()}%',
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge
-                                        ?.color ??
-                                    Colors.white,
+                              style: SacredStyles.withColor(
+                                SacredStyles.display32Bold,
+                                theme.colorScheme.onSurface,
                               ),
                             ),
-                            const Text(
+                            Text(
                               'DAILY GOAL',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: AppColors.textSecondary,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1,
+                              style: SacredStyles.withColor(
+                                SacredStyles.inter12.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1),
+                                isDark
+                                    ? AppColors.textSecondary
+                                    : AppColors.textSecondaryLight,
                               ),
                             ),
                           ],
@@ -159,23 +152,23 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Widget _buildStatTile(BuildContext context, String label, String value) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Column(
       children: [
         Text(
           value,
-          style: TextStyle(
-            color: Theme.of(context).textTheme.bodyLarge?.color ?? Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: SacredStyles.withColor(
+            SacredStyles.inter20Bold,
+            theme.colorScheme.onSurface,
           ),
         ),
         Text(
           label.toUpperCase(),
-          style: const TextStyle(
-            color: AppColors.textSecondary,
-            fontSize: 10,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1,
+          style: SacredStyles.withColor(
+            SacredStyles.inter10Bold.copyWith(letterSpacing: 1),
+            isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
           ),
         ),
       ],
@@ -183,16 +176,15 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Widget _buildSubjectDistribution(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Subject distribution',
-          style: TextStyle(
-            color:
-                Theme.of(context).textTheme.titleLarge?.color ?? Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+          style: SacredStyles.withColor(
+            SacredStyles.inter18Bold,
+            theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 16),
@@ -202,6 +194,9 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Widget _buildSubjectBar(BuildContext context, Map<String, dynamic> subject) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Column(
@@ -216,18 +211,21 @@ class StatisticsScreen extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     subject['name'] as String,
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color ??
-                            Colors.white,
-                        fontWeight: FontWeight.w600),
+                    style: SacredStyles.withColor(
+                      SacredStyles.inter14
+                          .copyWith(fontWeight: FontWeight.w600),
+                      theme.colorScheme.onSurface,
+                    ),
                   ),
                 ],
               ),
               Text(
                 '${((subject['progress'] as double) * 100).toInt()}%',
-                style: GoogleFonts.robotoMono(
-                  color: AppColors.textSecondary,
-                  fontSize: 12,
+                style: SacredStyles.withColor(
+                  SacredStyles.mono12,
+                  isDark
+                      ? AppColors.textSecondary
+                      : AppColors.textSecondaryLight,
                 ),
               ),
             ],
@@ -237,7 +235,7 @@ class StatisticsScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
               value: subject['progress'] as double,
-              backgroundColor: Theme.of(context).brightness == Brightness.dark
+              backgroundColor: isDark
                   ? Colors.white.withValues(alpha: 0.05)
                   : Colors.black.withValues(alpha: 0.05),
               valueColor:
@@ -251,6 +249,7 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Widget _buildActivityHeatmap(BuildContext context) {
+    final theme = Theme.of(context);
     return PremiumGlassContainer(
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -259,13 +258,12 @@ class StatisticsScreen extends StatelessWidget {
           children: [
             Text(
               'Activity Heatmap',
-              style: TextStyle(
-                  color: Theme.of(context).textTheme.titleMedium?.color ??
-                      Colors.white,
-                  fontWeight: FontWeight.bold),
+              style: SacredStyles.withColor(
+                SacredStyles.inter16.copyWith(fontWeight: FontWeight.bold),
+                theme.colorScheme.onSurface,
+              ),
             ),
             const SizedBox(height: 16),
-            // Simplied heatmap visualization for brevity
             Wrap(
               spacing: 6,
               runSpacing: 6,
@@ -276,12 +274,10 @@ class StatisticsScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: index % 5 == 0
                         ? AppColors.primary
-                        : Theme.of(context).colorScheme.surface,
+                        : theme.colorScheme.surface,
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white.withValues(alpha: 0.05)
-                          : AppColors.borderLight,
+                      color: theme.colorScheme.outline,
                     ),
                   ),
                 );

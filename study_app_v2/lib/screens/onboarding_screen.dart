@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../providers/user_prefs_provider.dart';
+import '../utils/sacred_styles.dart';
 import 'home_dashboard_screen.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -27,8 +28,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.bgDark,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -38,25 +42,31 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               const SizedBox(height: 40),
               Text(
                 'TAILOR YOUR\nLEARNING',
-                style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      height: 1.1,
-                      fontSize: 36,
-                    ),
+                style: SacredStyles.withColor(
+                  SacredStyles.display32Bold
+                      .copyWith(height: 1.1, fontSize: 36),
+                  theme.colorScheme.onSurface,
+                ),
               ),
               const SizedBox(height: 12),
               Text(
-                'Select your academic level and subjects to personalze your hub.',
-                style: Theme.of(context).textTheme.bodyMedium,
+                'Select your academic level and subjects to personalize your hub.',
+                style: SacredStyles.withColor(
+                  SacredStyles.inter14,
+                  isDark
+                      ? AppColors.textSecondary
+                      : AppColors.textSecondaryLight,
+                ),
               ),
               const SizedBox(height: 40),
 
               // Grade Section
-              const Text(
+              Text(
                 'Select Grade',
-                style: TextStyle(
-                  color: AppColors.textMain,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                style: SacredStyles.withColor(
+                  SacredStyles.inter16
+                      .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+                  theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 20),
@@ -77,14 +87,16 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       return Center(
                         child: Text(
                           'Grade $grade',
-                          style: TextStyle(
-                            fontSize: isSelected ? 24 : 18,
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                            color: isSelected
+                          style: SacredStyles.withColor(
+                            isSelected
+                                ? SacredStyles.inter16.copyWith(
+                                    fontWeight: FontWeight.bold, fontSize: 24)
+                                : SacredStyles.inter16.copyWith(fontSize: 18),
+                            isSelected
                                 ? AppColors.primary
-                                : AppColors.textSecondary,
+                                : (isDark
+                                    ? AppColors.textSecondary
+                                    : AppColors.textSecondaryLight),
                           ),
                         ),
                       );
@@ -97,12 +109,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               const SizedBox(height: 40),
 
               // Subjects Section
-              const Text(
+              Text(
                 'Interests & Subjects',
-                style: TextStyle(
-                  color: AppColors.textMain,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                style: SacredStyles.withColor(
+                  SacredStyles.inter16
+                      .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
+                  theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 20),
@@ -133,24 +145,27 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         decoration: BoxDecoration(
                           color: isSelected
                               ? AppColors.primary
-                              : AppColors.surface,
+                              : theme.colorScheme.surface,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
                             color: isSelected
                                 ? AppColors.primary
-                                : Colors.white.withValues(alpha: 0.05),
+                                : theme.colorScheme.outline,
                           ),
                         ),
                         alignment: Alignment.center,
                         child: Text(
                           subject,
-                          style: TextStyle(
-                            color: isSelected
+                          style: SacredStyles.withColor(
+                            isSelected
+                                ? SacredStyles.inter14
+                                    .copyWith(fontWeight: FontWeight.bold)
+                                : SacredStyles.inter14,
+                            isSelected
                                 ? Colors.white
-                                : AppColors.textOffWhite,
-                            fontWeight: isSelected
-                                ? FontWeight.bold
-                                : FontWeight.normal,
+                                : (isDark
+                                    ? AppColors.textOffWhite
+                                    : AppColors.textMain),
                           ),
                         ),
                       ),
@@ -183,10 +198,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       ),
                       elevation: 0,
                     ),
-                    child: const Text(
+                    child: Text(
                       'Enter PadhLe Hub',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: SacredStyles.withColor(
+                          SacredStyles.inter16
+                              .copyWith(fontWeight: FontWeight.bold),
+                          Colors.white),
                     ),
                   ),
                 ),

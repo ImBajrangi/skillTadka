@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/user_prefs_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bento_card.dart';
 import '../utils/mock_data.dart';
+import '../utils/sacred_styles.dart';
 
 class ModernHomeScreen extends ConsumerWidget {
   const ModernHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(24, 80, 24, 120),
         child: Column(
@@ -36,6 +37,9 @@ class ModernHomeScreen extends ConsumerWidget {
   }
 
   Widget _buildHeader(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -47,9 +51,7 @@ class ModernHomeScreen extends ConsumerWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? AppColors.border
-                      : AppColors.borderLight,
+                  color: theme.colorScheme.outline,
                 ),
                 image: const DecorationImage(
                   image: NetworkImage(
@@ -62,27 +64,18 @@ class ModernHomeScreen extends ConsumerWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      'ALEX',
-                      style: GoogleFonts.robotoMono(
-                        color: Theme.of(context).textTheme.bodyLarge?.color ??
-                            AppColors.textMain,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ],
+                Text(
+                  'ALEX',
+                  style: SacredStyles.withColor(
+                    SacredStyles.mono14Bold,
+                    theme.colorScheme.onSurface,
+                  ),
                 ),
                 Text(
                   'GRADE 11 • SCIENCE STREAM',
-                  style: GoogleFonts.robotoMono(
-                    color: AppColors.textSecondary,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.0,
+                  style: SacredStyles.withColor(
+                    SacredStyles.mono10Bold,
+                    isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
                   ),
                 ),
               ],
@@ -111,26 +104,34 @@ class ModernHomeScreen extends ConsumerWidget {
 
   Widget _buildHeaderAction(BuildContext context, IconData icon,
       {VoidCallback? onTap}) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: 36,
         height: 36,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? AppColors.border
-                : AppColors.borderLight,
+            color: theme.colorScheme.outline,
           ),
         ),
-        child: Icon(icon, color: AppColors.textSecondary, size: 20),
+        child: Icon(
+          icon,
+          color: isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
+          size: 20,
+        ),
       ),
     );
   }
 
   Widget _buildSectionHeader(BuildContext context, String title) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -139,25 +140,20 @@ class ModernHomeScreen extends ConsumerWidget {
           children: [
             Text(
               title.toUpperCase(),
-              style: GoogleFonts.robotoMono(
-                color: AppColors.textSecondary,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 2.0,
+              style: SacredStyles.withColor(
+                SacredStyles.mono12Bold,
+                isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
               ),
             ),
-            const Icon(Icons.tune_rounded,
-                color: AppColors.textSecondary, size: 18),
+            Icon(
+              Icons.tune_rounded,
+              color: isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
+              size: 18,
+            ),
           ],
         ),
         const SizedBox(height: 8),
-        Container(
-          height: 1,
-          color: (Theme.of(context).brightness == Brightness.dark
-                  ? AppColors.border
-                  : AppColors.borderLight)
-              .withValues(alpha: 0.5),
-        ),
+        const Divider(),
       ],
     );
   }
@@ -165,7 +161,7 @@ class ModernHomeScreen extends ConsumerWidget {
   Widget _buildStatusBento(BuildContext context) {
     return Row(
       children: [
-        Expanded(
+        const Expanded(
           flex: 45,
           child: BentoCard(
             title: '${MockData.userStreak} Days',
@@ -260,15 +256,16 @@ class ModernHomeScreen extends ConsumerWidget {
 
   Widget _buildAssignmentItem(BuildContext context, String title, String due,
       IconData icon, Color color) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? Colors.white.withValues(alpha: 0.05)
-              : AppColors.borderLight,
+          color: theme.colorScheme.outline,
         ),
       ),
       child: Row(
@@ -286,21 +283,27 @@ class ModernHomeScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title,
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyLarge?.color ??
-                            AppColors.textMain,
-                        fontWeight: FontWeight.bold)),
-                Text(due,
-                    style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyMedium?.color ??
-                            AppColors.textSecondary,
-                        fontSize: 12)),
+                Text(
+                  title,
+                  style: SacredStyles.withColor(
+                    SacredStyles.inter16.copyWith(fontWeight: FontWeight.bold),
+                    theme.colorScheme.onSurface,
+                  ),
+                ),
+                Text(
+                  due,
+                  style: SacredStyles.withColor(
+                    SacredStyles.inter12,
+                    isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
+                  ),
+                ),
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded,
-              color: AppColors.textSecondary),
+          Icon(
+            Icons.chevron_right_rounded,
+            color: isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
+          ),
         ],
       ),
     );
