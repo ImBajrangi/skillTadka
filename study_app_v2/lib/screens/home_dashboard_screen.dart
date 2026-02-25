@@ -32,26 +32,57 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final userPrefs = ref.watch(userPrefsProvider);
+    final isDark = theme.brightness == Brightness.dark;
+    final topPadding = MediaQuery.of(context).padding.top;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       extendBody: true,
       body: Stack(
         children: [
-          IndexedStack(
-            index: _currentIndex,
-            children: _screens,
+          const Positioned.fill(child: GrainyTextureOverlay(opacity: 0.01)),
+          RepaintBoundary(
+            child: IndexedStack(
+              index: _currentIndex,
+              children: _screens,
+            ),
           ),
-          _buildFloatingModeToggle(context, userPrefs.isModernMode),
+          _buildFloatingModeToggle(context, userPrefs.isModernMode, topPadding),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-        shape: const CircleBorder(),
-        elevation: 10,
-        child: const Icon(Icons.add_rounded, size: 32),
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(top: 32), // Perfectly docked for 80px bar
+        child: BouncyButton(
+          onTap: () {},
+          child: Container(
+            width: 62,
+            height: 62,
+            decoration: BoxDecoration(
+              gradient: const SweepGradient(
+                colors: [
+                  AppColors.primary,
+                  AppColors.secondary,
+                  AppColors.primary,
+                ],
+              ),
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.3),
+                  blurRadius: 15,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+              border: Border.all(
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.2)
+                    : Colors.black.withValues(alpha: 0.1),
+                width: 2,
+              ),
+            ),
+            child: const Icon(Icons.add_rounded, color: Colors.white, size: 38),
+          ),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: GlassBottomBar(
@@ -65,12 +96,13 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
     );
   }
 
-  Widget _buildFloatingModeToggle(BuildContext context, bool isModern) {
+  Widget _buildFloatingModeToggle(
+      BuildContext context, bool isModern, double topPadding) {
     final theme = Theme.of(context);
     return Positioned(
-      top: 60,
+      top: topPadding + 8,
       right: 24,
-      child: GestureDetector(
+      child: BouncyButton(
         onTap: () {
           ref.read(userPrefsProvider.notifier).toggleModernMode();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -91,15 +123,11 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
           borderRadius: BorderRadius.circular(20),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: theme.colorScheme.outline),
-            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(isModern ? Icons.bolt : Icons.auto_awesome,
-                    color: AppColors.primary, size: 20),
+                Icon(isModern ? Icons.bolt_rounded : Icons.auto_awesome_rounded,
+                    color: AppColors.primary, size: 18),
                 const SizedBox(width: 8),
                 Text(
                   isModern ? 'MODERN' : 'BEGINNER',

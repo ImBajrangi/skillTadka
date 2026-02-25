@@ -23,17 +23,23 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
       backgroundColor: theme.scaffoldBackgroundColor,
       body: Stack(
         children: [
-          const GrainyTextureOverlay(opacity: 0.03),
-          // Background decorative spheres
+          const Positioned.fill(child: GrainyTextureOverlay(opacity: 0.02)),
           Positioned(
-            top: 100,
-            left: -50,
+            top: -100,
+            right: -100,
             child: Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    shape: BoxShape.circle)),
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.primary.withValues(alpha: 0.15),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
           ),
           SafeArea(
             child: Column(
@@ -41,28 +47,45 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(24.0),
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back,
-                        color: theme.colorScheme.onSurface),
-                    onPressed: () => Navigator.pop(context),
+                  child: BouncyButton(
+                    onTap: () => Navigator.pop(context),
+                    child: PremiumGlassContainer(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        width: 44,
+                        height: 44,
+                        alignment: Alignment.center,
+                        child: Icon(Icons.arrow_back_ios_new_rounded,
+                            color: theme.colorScheme.onSurface, size: 18),
+                      ),
+                    ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Select Grade',
+                        'GRADE',
                         style: SacredStyles.withColor(
-                          SacredStyles.display32Bold.copyWith(
-                              fontSize: 48, fontWeight: FontWeight.bold),
-                          theme.colorScheme.onSurface,
+                          SacredStyles.mono14Bold.copyWith(letterSpacing: 4.0),
+                          AppColors.primary,
                         ),
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        'Choose your current academic class to personalize your experience.',
+                        'Select Level',
+                        style: SacredStyles.withColor(
+                          SacredStyles.display32Bold
+                              .copyWith(fontSize: 56, letterSpacing: -2.0),
+                          theme.colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Personalize your study experience by choosing your current academic grade.',
                         style: SacredStyles.withColor(
                           SacredStyles.inter16,
                           isDark
@@ -75,51 +98,55 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                 ),
                 const Spacer(),
                 SizedBox(
-                  height: 350,
+                  height: 300,
                   child: ListWheelScrollView(
-                    itemExtent: 100,
-                    perspective: 0.005,
-                    diameterRatio: 2.0,
+                    itemExtent: 110,
+                    perspective: 0.004,
+                    diameterRatio: 1.8,
                     physics: const FixedExtentScrollPhysics(),
                     onSelectedItemChanged: (index) {
                       setState(() => _selectedGrade = _grades[index]);
                     },
                     children: _grades.map((grade) {
                       bool isSelected = _selectedGrade == grade;
-                      return AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        width: isSelected ? 240 : 180,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? theme.colorScheme.onSurface
-                              : theme.colorScheme.surface,
-                          borderRadius: BorderRadius.circular(32),
-                          border: Border.all(
-                              color: isSelected
-                                  ? Colors.transparent
-                                  : theme.colorScheme.outline),
-                          boxShadow: isSelected
-                              ? [
-                                  BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 20,
-                                      offset: const Offset(0, 10))
-                                ]
-                              : [],
-                        ),
-                        child: Text(
-                          'Grade $grade',
-                          style: SacredStyles.withColor(
-                            isSelected
-                                ? SacredStyles.display32Bold
-                                    .copyWith(fontSize: 32)
-                                : SacredStyles.headline24SemiBold,
-                            isSelected
+                      return BouncyButton(
+                        scaleFactor: 0.98,
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          width: isSelected ? 260 : 180,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: isSelected
                                 ? AppColors.primary
-                                : (isDark
-                                    ? AppColors.textSecondary
-                                    : AppColors.textSecondaryLight),
+                                : theme.colorScheme.surface,
+                            borderRadius: BorderRadius.circular(32),
+                            border: Border.all(
+                                color: isSelected
+                                    ? Colors.transparent
+                                    : theme.colorScheme.outline
+                                        .withValues(alpha: 0.5)),
+                            boxShadow: isSelected
+                                ? [
+                                    BoxShadow(
+                                        color: AppColors.primary
+                                            .withValues(alpha: 0.3),
+                                        blurRadius: 24,
+                                        offset: const Offset(0, 10))
+                                  ]
+                                : [],
+                          ),
+                          child: Text(
+                            'GRADE $grade',
+                            style: SacredStyles.withColor(
+                              isSelected
+                                  ? SacredStyles.inter24Bold
+                                  : SacredStyles.inter18Bold,
+                              isSelected
+                                  ? Colors.white
+                                  : (isDark
+                                      ? AppColors.textSecondary
+                                      : AppColors.textSecondaryLight),
+                            ),
                           ),
                         ),
                       );
@@ -129,20 +156,24 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                 const Spacer(),
                 Padding(
                   padding: const EdgeInsets.all(40),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 64,
-                    child: PremiumShineEffect(
-                      child: ElevatedButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32)),
-                          elevation: 10,
-                          shadowColor: AppColors.primary.withValues(alpha: 0.5),
+                  child: BouncyButton(
+                    onTap: () => Navigator.pop(context),
+                    child: PremiumGlassContainer(
+                      borderRadius: BorderRadius.circular(32),
+                      showShimmer: true,
+                      borderColor: AppColors.primary.withValues(alpha: 0.3),
+                      child: Container(
+                        width: double.infinity,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              AppColors.primary,
+                              AppColors.primary.withValues(alpha: 0.8),
+                            ],
+                          ),
                         ),
+                        alignment: Alignment.center,
                         child: Text(
                           'CONTINUE',
                           style: SacredStyles.withColor(

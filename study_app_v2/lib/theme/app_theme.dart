@@ -28,6 +28,16 @@ class AppColors {
   static const Color textSecondaryLight = Color(0xFF4B5563); // Gray 600
 
   // Glows & Shadows
+  static const Color premiumGlow = Color(0x3322C55E);
+  static const Color glassBorder = Color(0x1AFFFFFF);
+  static const Color glassBorderLight = Color(0x1A000000);
+
+  static const LinearGradient primaryGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF22C55E), Color(0xFF15803D)],
+  );
+
   static List<BoxShadow> emeraldGlow = [
     BoxShadow(
       color: const Color(0xFF22C55E).withValues(alpha: 0.4),

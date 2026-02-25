@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bento_card.dart';
+import '../widgets/premium_effects.dart';
 import '../utils/mock_data.dart';
 import '../utils/sacred_styles.dart';
 
@@ -10,22 +11,23 @@ class LibraryVaultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final topPadding = MediaQuery.of(context).padding.top;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(24, 80, 24, 120),
+        padding: EdgeInsets.fromLTRB(24, topPadding + 80, 24, 160),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(context),
-            const SizedBox(height: 40),
-            _buildSectionHeader(context, 'Quick Access'),
-            const SizedBox(height: 20),
+            const SizedBox(height: 48),
+            _buildSectionHeader(context, 'QUICK ACCESS'),
+            const SizedBox(height: 24),
             _buildQuickAccessBento(),
-            const SizedBox(height: 40),
-            _buildSectionHeader(context, 'Categories'),
-            const SizedBox(height: 20),
+            const SizedBox(height: 48),
+            _buildSectionHeader(context, 'ALL CATEGORIES'),
+            const SizedBox(height: 24),
             _buildCategoriesList(context),
           ],
         ),
@@ -42,16 +44,21 @@ class LibraryVaultScreen extends StatelessWidget {
       children: [
         Row(
           children: [
-            Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: theme.colorScheme.outline),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://lh3.googleusercontent.com/aida-public/AB6AXuBqUWP7HM6rEHnI5McRApJipQP5ABiMvZt7lTycq939qkZCO7NM8Aqb-aAmcIPCUpm0pib7oQMJh-xCec7v8lpVmCegcqW75UA30TXPusU062bT4alEykfyED8stqFy_Y7Chq8To4Zxt0owfMK2OWN4eKYDqr2Vm786b5CGPWn8jFPboyVUnCR2cgAsIM-11WNXF-IzViRvMVZRIfIO0DopIp_Zwkit7O8FeztCOoD-FmZfx-HxSkdIfIQBv7jp-Q_tUtg5N7GReo4'),
-                  fit: BoxFit.cover,
+            BouncyButton(
+              onTap: () {},
+              child: Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: AppColors.primary.withValues(alpha: 0.5),
+                      width: 2),
+                  image: const DecorationImage(
+                    image: NetworkImage(
+                        'https://lh3.googleusercontent.com/aida-public/AB6AXuBqUWP7HM6rEHnI5McRApJipQP5ABiMvZt7lTycq939qkZCO7NM8Aqb-aAmcIPCUpm0pib7oQMJh-xCec7v8lpVmCegcqW75UA30TXPusU062bT4alEykfyED8stqFy_Y7Chq8To4Zxt0owfMK2OWN4eKYDqr2Vm786b5CGPWn8jFPboyVUnCR2cgAsIM-11WNXF-IzViRvMVZRIfIO0DopIp_Zwkit7O8FeztCOoD-FmZfx-HxSkdIfIQBv7jp-Q_tUtg5N7GReo4'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),
@@ -59,24 +66,20 @@ class LibraryVaultScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Text(
-                      'ALEX',
-                      style: SacredStyles.withColor(
-                        SacredStyles.mono14Bold,
-                        theme.colorScheme.onSurface,
-                      ),
-                    ),
-                  ],
+                Text(
+                  'THE VAULT',
+                  style: SacredStyles.withColor(
+                    SacredStyles.mono14Bold.copyWith(letterSpacing: 2.0),
+                    theme.colorScheme.onSurface,
+                  ),
                 ),
                 Text(
-                  'GRADE 11 • SCIENCE STREAM',
+                  'ALEX J. • GRADE 11',
                   style: SacredStyles.withColor(
-                    SacredStyles.mono10Bold,
+                    SacredStyles.mono10Bold.copyWith(letterSpacing: 0.5),
                     isDark
                         ? AppColors.textSecondary
-                        : AppColors.textSecondaryLight,
+                        : theme.colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -86,8 +89,8 @@ class LibraryVaultScreen extends StatelessWidget {
         Row(
           children: [
             _buildHeaderAction(context, Icons.search_rounded),
-            const SizedBox(width: 8),
-            _buildHeaderAction(context, Icons.notifications_none_rounded),
+            const SizedBox(width: 10),
+            _buildHeaderAction(context, Icons.filter_list_rounded),
           ],
         ),
       ],
@@ -98,18 +101,24 @@ class LibraryVaultScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    return Container(
-      width: 36,
-      height: 36,
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: theme.colorScheme.outline),
+    return BouncyButton(
+      onTap: () {},
+      child: PremiumGlassContainer(
+        borderRadius: BorderRadius.circular(12),
+        blur: 10,
+        opacity: 0.1,
+        child: Container(
+          width: 40,
+          height: 40,
+          alignment: Alignment.center,
+          child: Icon(
+            icon,
+            color:
+                isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
+            size: 22,
+          ),
+        ),
       ),
-      child: Icon(icon,
-          color:
-              isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
-          size: 20),
     );
   }
 
@@ -124,21 +133,23 @@ class LibraryVaultScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              title.toUpperCase(),
+              title,
               style: SacredStyles.withColor(
-                SacredStyles.mono12Bold,
-                isDark ? AppColors.textSecondary : AppColors.textSecondaryLight,
-              ).copyWith(letterSpacing: 2.0),
+                SacredStyles.mono12Bold.copyWith(letterSpacing: 1.5),
+                isDark
+                    ? AppColors.textSecondary
+                    : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ),
-            Icon(Icons.manage_search_rounded,
+            Icon(Icons.auto_awesome_mosaic_rounded,
                 color: isDark
                     ? AppColors.textSecondary
-                    : AppColors.textSecondaryLight,
-                size: 18),
+                    : theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                size: 14),
           ],
         ),
-        const SizedBox(height: 8),
-        Divider(height: 1, color: theme.colorScheme.outline),
+        const SizedBox(height: 12),
+        Divider(color: theme.colorScheme.outline.withValues(alpha: 0.3)),
       ],
     );
   }
@@ -149,20 +160,22 @@ class LibraryVaultScreen extends StatelessWidget {
         Expanded(
           child: BentoCard(
             title: 'Downloads',
-            subtitle: '12 Files',
+            subtitle: '12 FILES',
             icon: Icons.download_for_offline_rounded,
-            accentColor: AppColors.accentBlue,
-            height: 120,
+            accentColor: AppColors.primary,
+            height: 140,
+            isGlow: true,
           ),
         ),
         SizedBox(width: 16),
         Expanded(
           child: BentoCard(
             title: 'Saved',
-            subtitle: '45 Resources',
+            subtitle: '45 ITEMS',
             icon: Icons.bookmark_rounded,
-            accentColor: AppColors.primaryAction,
-            height: 120,
+            accentColor: Colors.purple,
+            height: 140,
+            isGlow: true,
           ),
         ),
       ],
@@ -175,7 +188,7 @@ class LibraryVaultScreen extends StatelessWidget {
           .map((cat) => _buildCategoryItem(
                 context,
                 cat['title'] as String,
-                '${cat['count']} Materials',
+                '${cat['count']} Resources',
                 cat['icon'] as IconData,
                 cat['color'] as Color,
               ))
@@ -190,52 +203,59 @@ class LibraryVaultScreen extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: theme.colorScheme.outline),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Icon(icon, color: color, size: 24),
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: BouncyButton(
+        onTap: () {},
+        child: PremiumGlassContainer(
+          borderRadius: BorderRadius.circular(24),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Row(
               children: [
-                Text(
-                  title,
-                  style: SacredStyles.withColor(
-                    SacredStyles.inter16
-                        .copyWith(fontWeight: FontWeight.bold, fontSize: 18),
-                    theme.colorScheme.onSurface,
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: color.withValues(alpha: 0.2)),
+                  ),
+                  child: Icon(icon, color: color, size: 24),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: SacredStyles.withColor(
+                          SacredStyles.inter16
+                              .copyWith(fontWeight: FontWeight.bold),
+                          theme.colorScheme.onSurface,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        count.toUpperCase(),
+                        style: SacredStyles.withColor(
+                          SacredStyles.mono10Bold,
+                          isDark
+                              ? AppColors.textSecondary
+                              : theme.colorScheme.onSurface
+                                  .withValues(alpha: 0.6),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Text(
-                  count,
-                  style: SacredStyles.withColor(
-                    SacredStyles.inter12,
-                    isDark
+                Icon(Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: isDark
                         ? AppColors.textSecondary
-                        : AppColors.textSecondaryLight,
-                  ),
-                ),
+                        : theme.colorScheme.onSurface.withValues(alpha: 0.6)),
               ],
             ),
           ),
-          Icon(Icons.chevron_right_rounded,
-              color: isDark
-                  ? AppColors.textSecondary
-                  : AppColors.textSecondaryLight),
-        ],
+        ),
       ),
     );
   }

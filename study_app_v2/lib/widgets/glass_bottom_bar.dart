@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import '../theme/app_theme.dart';
+import 'premium_effects.dart';
 
 class GlassBottomBar extends StatelessWidget {
   final int currentIndex;
@@ -14,61 +14,102 @@ class GlassBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(24, 0, 24, 30),
-      height: 70,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(35),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.05),
-              borderRadius: BorderRadius.circular(35),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.1),
-                width: 1.5,
-              ),
-            ),
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
+    return SizedBox(
+      // Fixed YouTube-Style Dock with Extreme Contrast
+      height: 60 + bottomPadding,
+      width: double.infinity,
+      child: PremiumGlassContainer(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        blur: 20, // Increased blur for the "White/Black" glass feel
+        // Extreme opacity as requested: 0.95 for Dark (Onyx), 1.0 for Light (Pure White)
+        opacity: isDark ? 0.95 : 1.0,
+        fillColor: isDark ? Colors.black : Colors.white,
+        borderColor: isDark
+            ? Colors.white.withValues(alpha: 0.08)
+            : Colors.black.withValues(alpha: 0.05),
+        child: LayoutBuilder(builder: (context, constraints) {
+          final totalWidth = constraints.maxWidth;
+          const fabWidth = 60.0;
+          final itemWidth = (totalWidth - fabWidth) / 4;
+
+          return Padding(
+            padding: EdgeInsets.only(bottom: bottomPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildNavItem(0, Icons.grid_view_rounded, 'Home'),
-                _buildNavItem(1, Icons.auto_stories_rounded, 'Library'),
-                const SizedBox(width: 40), // Space for FAB
-                _buildNavItem(2, Icons.bar_chart_rounded, 'Stats'),
-                _buildNavItem(3, Icons.person_rounded, 'Profile'),
+                _buildNavItem(context, 0, Icons.grid_view_rounded, itemWidth),
+                _buildNavItem(
+                    context, 1, Icons.auto_stories_rounded, itemWidth),
+                const SizedBox(width: fabWidth),
+                _buildNavItem(context, 2, Icons.query_stats_rounded, itemWidth),
+                _buildNavItem(context, 3, Icons.person_rounded, itemWidth),
               ],
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }
 
-  Widget _buildNavItem(int index, IconData icon, String label) {
+  Widget _buildNavItem(
+      BuildContext context, int index, IconData icon, double width) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     bool isActive = currentIndex == index;
-    return GestureDetector(
+
+    // Extreme contrast icon colors
+    const activeColor = AppColors.primary;
+    final inactiveColor = isDark
+        ? Colors.white.withValues(alpha: 0.3)
+        : Colors.black.withValues(alpha: 0.4);
+
+    return BouncyButton(
       onTap: () => onTap(index),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon,
-            color: isActive ? AppColors.primary : AppColors.textSecondary,
-            size: 26,
-          ),
-          const SizedBox(height: 4),
-          if (isActive)
-            Container(
-              width: 4,
-              height: 4,
-              decoration: const BoxDecoration(
-                color: AppColors.primary,
-                shape: BoxShape.circle,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        width: width,
+        alignment: Alignment.center,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            if (isActive)
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      activeColor.withValues(alpha: 0.15),
+                      Colors.transparent,
+                    ],
+                  ),
+                ),
+              ),
+            AnimatedScale(
+              duration: const Duration(milliseconds: 150),
+              curve: Curves.easeOutCubic,
+              scale: isActive ? 1.25 : 1.0,
+              child: Icon(
+                icon,
+                color: isActive ? activeColor : inactiveColor,
+                size: 26,
+                shadows: isActive
+                    ? [
+                        Shadow(
+                          color: activeColor.withValues(alpha: 0.4),
+                          blurRadius: 15, // Solid glow for high contrast
+                        )
+                      ]
+                    : null,
               ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }

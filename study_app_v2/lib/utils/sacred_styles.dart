@@ -44,12 +44,31 @@ class SacredStyles {
     fontSize: 16,
   );
 
+  static final TextStyle inter16Bold = GoogleFonts.inter(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  );
+
   static final TextStyle inter14 = GoogleFonts.inter(
     fontSize: 14,
   );
 
+  static final TextStyle inter14Bold = GoogleFonts.inter(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+  );
+
   static final TextStyle inter12 = GoogleFonts.inter(
     fontSize: 12,
+  );
+
+  static final TextStyle inter12Bold = GoogleFonts.inter(
+    fontSize: 12,
+    fontWeight: FontWeight.bold,
+  );
+
+  static final TextStyle inter10 = GoogleFonts.inter(
+    fontSize: 10,
   );
 
   static final TextStyle inter10Bold = GoogleFonts.inter(
@@ -67,6 +86,18 @@ class SacredStyles {
     fontSize: 24,
     fontWeight: FontWeight.w600,
   );
+
+  static final List<Shadow> premiumShadows = [
+    Shadow(
+      color: Colors.black.withValues(alpha: 0.3),
+      offset: const Offset(0, 2),
+      blurRadius: 4,
+    ),
+  ];
+
+  static TextStyle withShadow(TextStyle style) {
+    return style.copyWith(shadows: premiumShadows);
+  }
 
   // Helper to get themed color for a style
   static TextStyle withColor(TextStyle style, Color color) {
