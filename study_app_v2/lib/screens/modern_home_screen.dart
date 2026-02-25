@@ -4,6 +4,9 @@ import '../providers/user_prefs_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/bento_card.dart';
 import '../widgets/premium_effects.dart';
+import '../widgets/premium_search_bar.dart';
+import 'achievement_profile_screen.dart';
+import 'content_details_screen.dart';
 import '../utils/mock_data.dart';
 import '../utils/sacred_styles.dart';
 
@@ -42,7 +45,12 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(context, ref),
-            const SizedBox(height: 48),
+            const SizedBox(height: 32),
+            PremiumSearchBar(
+              onChanged: (val) {},
+              onFilterTap: () {},
+            ),
+            const SizedBox(height: 32),
             _buildStatusBento(context),
             const SizedBox(height: 40),
             _buildSectionHeader(context, 'Today\'s Focus'),
@@ -68,7 +76,17 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen> {
         Row(
           children: [
             BouncyButton(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const AchievementProfileScreen(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
+                );
+              },
               child: Container(
                 width: 44,
                 height: 44,
@@ -121,7 +139,18 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen> {
                   ref.read(userPrefsProvider.notifier).toggleThemeMode(),
             ),
             const SizedBox(width: 10),
-            _buildHeaderAction(context, Icons.notifications_none_rounded),
+            _buildHeaderAction(
+              context,
+              Icons.notifications_none_rounded,
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('No new notifications'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ],
@@ -347,7 +376,20 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen> {
     final isDark = theme.brightness == Brightness.dark;
 
     return BouncyButton(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                ContentDetailsScreen(
+              title: title,
+              subject: title.split(' ').first,
+            ),
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
+      },
       child: PremiumGlassContainer(
         borderRadius: BorderRadius.circular(24),
         child: Container(

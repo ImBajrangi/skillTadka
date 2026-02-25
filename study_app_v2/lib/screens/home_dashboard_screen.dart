@@ -5,6 +5,7 @@ import '../widgets/premium_effects.dart';
 import '../widgets/glass_bottom_bar.dart';
 import '../providers/user_prefs_provider.dart';
 import '../utils/sacred_styles.dart';
+import 'grade_selection_screen.dart';
 import 'library_vault_screen.dart';
 import 'modern_home_screen.dart';
 import 'statistics_screen.dart';
@@ -53,7 +54,13 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
       floatingActionButton: Container(
         margin: const EdgeInsets.only(top: 32), // Perfectly docked for 80px bar
         child: BouncyButton(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const GradeSelectionScreen()),
+            );
+          },
           child: Container(
             width: 62,
             height: 62,

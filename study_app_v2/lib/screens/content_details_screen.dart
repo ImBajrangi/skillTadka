@@ -3,7 +3,14 @@ import '../theme/app_theme.dart';
 import '../utils/sacred_styles.dart';
 
 class ContentDetailsScreen extends StatelessWidget {
-  const ContentDetailsScreen({super.key});
+  final String title;
+  final String subject;
+
+  const ContentDetailsScreen({
+    super.key,
+    this.title = 'Quantum Mechanics: The Wave Function',
+    this.subject = 'PHYSICAL SCIENCES',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +113,7 @@ class ContentDetailsScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              'PHYSICS',
+                              subject.toUpperCase(),
                               style: SacredStyles.withColor(
                                 SacredStyles.mono10Bold,
                                 AppColors.primary,
@@ -129,7 +136,7 @@ class ContentDetailsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Quantum Mechanics: The Wave Function',
+                        title,
                         style: SacredStyles.withColor(
                           SacredStyles.headline24SemiBold,
                           theme.colorScheme.onSurface,

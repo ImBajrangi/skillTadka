@@ -4,6 +4,7 @@ import '../widgets/bento_card.dart';
 import '../widgets/premium_effects.dart';
 import '../utils/mock_data.dart';
 import '../utils/sacred_styles.dart';
+import 'resource_detail_screen.dart';
 
 class LibraryVaultScreen extends StatelessWidget {
   const LibraryVaultScreen({super.key});
@@ -102,7 +103,14 @@ class LibraryVaultScreen extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return BouncyButton(
-      onTap: () {},
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Search placeholder triggered'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      },
       child: PremiumGlassContainer(
         borderRadius: BorderRadius.circular(12),
         blur: 10,
@@ -204,7 +212,17 @@ class LibraryVaultScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       child: BouncyButton(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const ResourceDetailScreen(),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
+          );
+        },
         child: PremiumGlassContainer(
           borderRadius: BorderRadius.circular(24),
           child: Container(
