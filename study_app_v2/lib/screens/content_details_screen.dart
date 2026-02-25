@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../utils/sacred_styles.dart';
+import 'tutor_chat_screen.dart';
+import 'mock_test_screen.dart';
+import '../widgets/premium_effects.dart';
 
 class ContentDetailsScreen extends StatelessWidget {
   final String title;
@@ -233,9 +236,30 @@ class ContentDetailsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         _buildToolItem(context, 'AI Tutor Chat',
-            Icons.chat_bubble_outline_rounded, Colors.green),
+            Icons.chat_bubble_outline_rounded, Colors.green, onTap: () {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const TutorChatScreen(),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
+          );
+        }),
         _buildToolItem(
-            context, 'Mock Test', Icons.assignment_outlined, Colors.purple),
+            context, 'Mock Test', Icons.assignment_outlined, Colors.purple,
+            onTap: () {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const MockTestScreen(),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
+          );
+        }),
         _buildToolItem(
             context, 'Flashcards', Icons.style_outlined, Colors.orange),
       ],
@@ -243,31 +267,35 @@ class ContentDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildToolItem(
-      BuildContext context, String title, IconData icon, Color color) {
+      BuildContext context, String title, IconData icon, Color color,
+      {VoidCallback? onTap}) {
     final theme = Theme.of(context);
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.onSurface.withValues(alpha: 0.03),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.colorScheme.outline),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: color, size: 24),
-          const SizedBox(width: 16),
-          Text(
-            title,
-            style: SacredStyles.withColor(
-              SacredStyles.inter16.copyWith(fontWeight: FontWeight.bold),
-              theme.colorScheme.onSurface,
+    return BouncyButton(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.onSurface.withValues(alpha: 0.03),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: theme.colorScheme.outline),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: color, size: 24),
+            const SizedBox(width: 16),
+            Text(
+              title,
+              style: SacredStyles.withColor(
+                SacredStyles.inter16.copyWith(fontWeight: FontWeight.bold),
+                theme.colorScheme.onSurface,
+              ),
             ),
-          ),
-          const Spacer(),
-          const Icon(Icons.chevron_right_rounded,
-              color: AppColors.textSecondary, size: 20),
-        ],
+            const Spacer(),
+            const Icon(Icons.chevron_right_rounded,
+                color: AppColors.textSecondary, size: 20),
+          ],
+        ),
       ),
     );
   }

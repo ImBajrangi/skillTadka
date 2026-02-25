@@ -8,6 +8,7 @@ import '../utils/sacred_styles.dart';
 import 'grade_selection_screen.dart';
 import 'library_vault_screen.dart';
 import 'modern_home_screen.dart';
+import 'beginner_home_screen.dart';
 import 'statistics_screen.dart';
 import 'profile_screen.dart';
 
@@ -22,12 +23,20 @@ class HomeDashboardScreen extends ConsumerStatefulWidget {
 class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [
-    const ModernHomeScreen(),
-    const LibraryVaultScreen(),
-    const StatisticsScreen(),
-    const ProfileScreen(),
-  ];
+  Widget _getScreen(int index, bool isModern) {
+    switch (index) {
+      case 0:
+        return isModern ? const ModernHomeScreen() : const BeginnerHomeScreen();
+      case 1:
+        return const LibraryVaultScreen();
+      case 2:
+        return const StatisticsScreen();
+      case 3:
+        return const ProfileScreen();
+      default:
+        return const ModernHomeScreen();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +54,12 @@ class _HomeDashboardScreenState extends ConsumerState<HomeDashboardScreen> {
           RepaintBoundary(
             child: IndexedStack(
               index: _currentIndex,
-              children: _screens,
+              children: [
+                _getScreen(0, userPrefs.isModernMode),
+                _getScreen(1, userPrefs.isModernMode),
+                _getScreen(2, userPrefs.isModernMode),
+                _getScreen(3, userPrefs.isModernMode),
+              ],
             ),
           ),
           _buildFloatingModeToggle(context, userPrefs.isModernMode, topPadding),

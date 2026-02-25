@@ -3,6 +3,9 @@ import '../theme/app_theme.dart';
 import '../utils/sacred_styles.dart';
 import '../widgets/premium_effects.dart';
 import 'grade_selection_screen.dart';
+import 'content_details_screen.dart';
+import 'pdf_viewer_screen.dart';
+import 'subscription_plans_screen.dart';
 
 class BeginnerHomeScreen extends StatelessWidget {
   const BeginnerHomeScreen({super.key});
@@ -320,7 +323,20 @@ class BeginnerHomeScreen extends StatelessWidget {
       String subtitle, Color accent) {
     final theme = Theme.of(context);
     return BouncyButton(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                ContentDetailsScreen(
+              title: title.replaceAll('\n', ' '),
+              subject: category,
+            ),
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
+      },
       child: PremiumGlassContainer(
         borderRadius: BorderRadius.circular(40),
         borderColor: accent.withValues(alpha: 0.3),
@@ -459,7 +475,17 @@ class BeginnerHomeScreen extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return BouncyButton(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const SubscriptionPlansScreen(),
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
+      },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
         child: PremiumGlassContainer(
@@ -559,7 +585,17 @@ class BeginnerHomeScreen extends StatelessWidget {
       BuildContext context, String name, String size, Color accent) {
     final theme = Theme.of(context);
     return BouncyButton(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                PDFViewerScreen(title: name),
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
+      },
       child: Container(
         width: 170,
         margin: const EdgeInsets.only(right: 16),
