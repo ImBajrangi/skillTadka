@@ -4,6 +4,7 @@ import '../widgets/bento_card.dart';
 import '../widgets/premium_effects.dart';
 import '../utils/mock_data.dart';
 import '../utils/sacred_styles.dart';
+import 'achievement_profile_screen.dart';
 import 'resource_detail_screen.dart';
 
 class LibraryVaultScreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class LibraryVaultScreen extends StatelessWidget {
             const SizedBox(height: 48),
             _buildSectionHeader(context, 'QUICK ACCESS'),
             const SizedBox(height: 24),
-            _buildQuickAccessBento(),
+            _buildQuickAccessBento(context),
             const SizedBox(height: 48),
             _buildSectionHeader(context, 'ALL CATEGORIES'),
             const SizedBox(height: 24),
@@ -46,7 +47,17 @@ class LibraryVaultScreen extends StatelessWidget {
         Row(
           children: [
             BouncyButton(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const AchievementProfileScreen(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
+                );
+              },
               child: Container(
                 width: 44,
                 height: 44,
@@ -162,8 +173,8 @@ class LibraryVaultScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildQuickAccessBento() {
-    return const Row(
+  Widget _buildQuickAccessBento(BuildContext context) {
+    return Row(
       children: [
         Expanded(
           child: BentoCard(
@@ -173,9 +184,16 @@ class LibraryVaultScreen extends StatelessWidget {
             accentColor: AppColors.primary,
             height: 140,
             isGlow: true,
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Text('Downloads folder opened'),
+                    behavior: SnackBarBehavior.floating),
+              );
+            },
           ),
         ),
-        SizedBox(width: 16),
+        const SizedBox(width: 16),
         Expanded(
           child: BentoCard(
             title: 'Saved',
@@ -184,6 +202,13 @@ class LibraryVaultScreen extends StatelessWidget {
             accentColor: Colors.purple,
             height: 140,
             isGlow: true,
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                    content: Text('Saved items vault opened'),
+                    behavior: SnackBarBehavior.floating),
+              );
+            },
           ),
         ),
       ],

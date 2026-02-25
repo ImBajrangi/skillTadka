@@ -321,39 +321,55 @@ class _ModernHomeScreenState extends ConsumerState<ModernHomeScreen> {
           accentColor: subject['color'] as Color,
           isGlow: isHero,
           onTap: () => _swapHero(position),
-          child: isHero ? _buildHeroAction() : null,
+          child: isHero ? _buildHeroAction(subject['name'] as String) : null,
         ),
       ),
     );
   }
 
-  Widget _buildHeroAction() {
+  Widget _buildHeroAction(String title) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final contentColor = isDark ? Colors.white : theme.colorScheme.onSurface;
 
-    return Container(
-      margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: isDark
-            ? Colors.white.withValues(alpha: 0.15)
-            : theme.colorScheme.onSurface.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'CONTINUE',
-            style: SacredStyles.withColor(
-              SacredStyles.inter10Bold,
-              contentColor,
+    return BouncyButton(
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                ContentDetailsScreen(
+              title: title,
+              subject: title.split(' ').first,
             ),
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
           ),
-          const SizedBox(width: 4),
-          Icon(Icons.arrow_forward_rounded, color: contentColor, size: 12),
-        ],
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: isDark
+              ? Colors.white.withValues(alpha: 0.15)
+              : theme.colorScheme.onSurface.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'CONTINUE',
+              style: SacredStyles.withColor(
+                SacredStyles.inter10Bold,
+                contentColor,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(Icons.arrow_forward_rounded, color: contentColor, size: 12),
+          ],
+        ),
       ),
     );
   }

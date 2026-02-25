@@ -32,21 +32,26 @@ class GlassBottomBar extends StatelessWidget {
             ? Colors.white.withValues(alpha: 0.08)
             : Colors.black.withValues(alpha: 0.05),
         child: LayoutBuilder(builder: (context, constraints) {
-          final totalWidth = constraints.maxWidth;
           const fabWidth = 60.0;
-          final itemWidth = (totalWidth - fabWidth) / 4;
 
           return Padding(
             padding: EdgeInsets.only(bottom: bottomPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildNavItem(context, 0, Icons.grid_view_rounded, itemWidth),
-                _buildNavItem(
-                    context, 1, Icons.auto_stories_rounded, itemWidth),
+                Expanded(
+                  child: _buildNavItem(context, 0, Icons.grid_view_rounded),
+                ),
+                Expanded(
+                  child: _buildNavItem(context, 1, Icons.auto_stories_rounded),
+                ),
                 const SizedBox(width: fabWidth),
-                _buildNavItem(context, 2, Icons.query_stats_rounded, itemWidth),
-                _buildNavItem(context, 3, Icons.person_rounded, itemWidth),
+                Expanded(
+                  child: _buildNavItem(context, 2, Icons.query_stats_rounded),
+                ),
+                Expanded(
+                  child: _buildNavItem(context, 3, Icons.person_rounded),
+                ),
               ],
             ),
           );
@@ -55,8 +60,7 @@ class GlassBottomBar extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(
-      BuildContext context, int index, IconData icon, double width) {
+  Widget _buildNavItem(BuildContext context, int index, IconData icon) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     bool isActive = currentIndex == index;
@@ -71,7 +75,6 @@ class GlassBottomBar extends StatelessWidget {
       onTap: () => onTap(index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 150),
-        width: width,
         alignment: Alignment.center,
         child: Stack(
           alignment: Alignment.center,
