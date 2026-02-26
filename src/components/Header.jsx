@@ -1,19 +1,48 @@
-export default function Header({ fileName, isDark, toggleTheme, onOpenFile }) {
+export default function Header({ fileName, isDark, toggleTheme, onOpenFile, currentView, setView }) {
     return (
         <header className="app-header">
             <div className="header-left">
-                <div className="logo">
+                <div className="logo" onClick={() => setView('landing')} style={{ cursor: 'pointer' }}>
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
                         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
                     </svg>
-                    <h1>Padh<span>Le</span></h1>
+                    <h1>Padh<span style={{ color: 'var(--student-yellow)' }}>Le</span></h1>
                 </div>
-                <span className="file-name" title={fileName}>{fileName}</span>
+
+                <nav className="header-tabs">
+                    <button
+                        className={`tab-btn ${currentView === 'marketplace' ? 'active' : ''}`}
+                        onClick={() => setView('marketplace')}
+                    >
+                        Shop
+                    </button>
+                    <button
+                        className={`tab-btn ${currentView === 'viewer' ? 'active' : ''}`}
+                        onClick={() => setView('viewer')}
+                    >
+                        Reader
+                    </button>
+                </nav>
             </div>
+
+            <div className="header-center">
+                <div className="search-bar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+                    <input type="text" placeholder="Search books, notes, courses..." />
+                </div>
+            </div>
+
             <div className="header-right">
+                <button className="icon-btn" aria-label="Cart">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" /></svg>
+                </button>
+                <button className="icon-btn" aria-label="Profile">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                </button>
+                <div className="divider"></div>
                 <button
-                    className="icon-btn"
+                    className="icon-btn theme-toggle"
                     onClick={toggleTheme}
                     aria-label="Toggle theme"
                     title={isDark ? 'Switch to light' : 'Switch to dark'}
@@ -23,10 +52,6 @@ export default function Header({ fileName, isDark, toggleTheme, onOpenFile }) {
                     ) : (
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
                     )}
-                </button>
-                <button className="primary-btn" onClick={onOpenFile} aria-label="Open PDF file">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /></svg>
-                    <span className="btn-text">Open</span>
                 </button>
             </div>
         </header>

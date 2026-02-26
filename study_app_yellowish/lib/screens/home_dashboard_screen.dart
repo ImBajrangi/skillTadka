@@ -139,8 +139,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             Container(
                 width: 4,
                 height: 4,
-                decoration:
-                    BoxDecoration(color: activeColor, shape: BoxShape.circle)),
+                decoration: const BoxDecoration(
+                    color: activeColor, shape: BoxShape.circle)),
         ],
       ),
     );

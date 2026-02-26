@@ -10,24 +10,33 @@ import Loader from './components/Loader';
 import ErrorModal from './components/ErrorModal';
 import Background from './components/Background';
 
+import Marketplace from './components/Marketplace';
+
 export default function App() {
   const fileInputRef = useRef(null);
   const viewer = usePdfViewer();
-  const [showLanding, setShowLanding] = useState(true);
+  const [view, setView] = useState('landing'); // 'landing', 'marketplace', 'viewer'
 
   const handleStartLearning = () => {
-    setShowLanding(false);
-    // Trigger file picker after a brief moment
-    setTimeout(() => fileInputRef.current?.click(), 100);
+    setView('marketplace');
   };
 
   const handleFileSelect = (file) => {
     viewer.handleFileSelect(file);
-    setShowLanding(false);
+    setView('viewer');
   };
 
-  // Show landing page if no PDF is loaded
-  if (showLanding && !viewer.pdfLoaded) {
+  const openReader = () => {
+    if (viewer.pdfLoaded) {
+      setView('viewer');
+    } else {
+      fileInputRef.current?.click();
+    }
+  };
+
+  // ── View Rendering ──
+
+  if (view === 'landing') {
     return (
       <div className="light-theme">
         <LandingPage onStartLearning={handleStartLearning} />
@@ -35,7 +44,6 @@ export default function App() {
     );
   }
 
-  // Show PDF viewer
   return (
     <div className={viewer.isDark ? 'dark-theme' : 'light-theme'}>
       <Background />
@@ -45,7 +53,10 @@ export default function App() {
           isDark={viewer.isDark}
           toggleTheme={viewer.toggleTheme}
           onOpenFile={() => fileInputRef.current?.click()}
+          currentView={view}
+          setView={setView}
         />
+
         <input
           ref={fileInputRef}
           type="file"
@@ -57,44 +68,52 @@ export default function App() {
           }}
         />
 
-        <main>
-          <Toolbar
-            scale={viewer.scale}
-            pageNum={viewer.pageNum}
-            totalPages={viewer.totalPages}
-            zoomIn={viewer.zoomIn}
-            zoomOut={viewer.zoomOut}
-            prevPage={viewer.prevPage}
-            nextPage={viewer.nextPage}
-            rotate={viewer.rotate}
-            toggleFullscreen={viewer.toggleFullscreen}
-            downloadPDF={viewer.downloadPDF}
-            printPDF={viewer.printPDF}
-            pdfLoaded={viewer.pdfLoaded}
-          />
+        <main className={view === 'marketplace' ? 'marketplace-view' : 'viewer-view'}>
+          {view === 'marketplace' ? (
+            <Marketplace onOpenReader={openReader} />
+          ) : (
+            <>
+              <Toolbar
+                scale={viewer.scale}
+                pageNum={viewer.pageNum}
+                totalPages={viewer.totalPages}
+                zoomIn={viewer.zoomIn}
+                zoomOut={viewer.zoomOut}
+                prevPage={viewer.prevPage}
+                nextPage={viewer.nextPage}
+                rotate={viewer.rotate}
+                toggleFullscreen={viewer.toggleFullscreen}
+                downloadPDF={viewer.downloadPDF}
+                printPDF={viewer.printPDF}
+                pdfLoaded={viewer.pdfLoaded}
+              />
 
-          <PDFCanvas
-            canvasRef={viewer.canvasRef}
-            pageNum={viewer.pageNum}
-            totalPages={viewer.totalPages}
-            prevPage={viewer.prevPage}
-            nextPage={viewer.nextPage}
-            pdfLoaded={viewer.pdfLoaded}
-          />
+              <PDFCanvas
+                canvasRef={viewer.canvasRef}
+                pageNum={viewer.pageNum}
+                totalPages={viewer.totalPages}
+                prevPage={viewer.prevPage}
+                nextPage={viewer.nextPage}
+                pdfLoaded={viewer.pdfLoaded}
+              />
 
-          <DropZone
-            onFileSelect={handleFileSelect}
-            visible={!viewer.pdfLoaded}
-          />
+              <DropZone
+                onFileSelect={handleFileSelect}
+                visible={!viewer.pdfLoaded}
+              />
+            </>
+          )}
         </main>
 
-        <Sidebar
-          pdfDoc={viewer.pdfDoc}
-          pageNum={viewer.pageNum}
-          goToPage={viewer.goToPage}
-          isOpen={viewer.sidebarOpen}
-          onClose={viewer.toggleSidebar}
-        />
+        {view === 'viewer' && (
+          <Sidebar
+            pdfDoc={viewer.pdfDoc}
+            pageNum={viewer.pageNum}
+            goToPage={viewer.goToPage}
+            isOpen={viewer.sidebarOpen}
+            onClose={viewer.toggleSidebar}
+          />
+        )}
       </div>
 
       <Loader visible={viewer.isLoading} />
@@ -102,4 +121,5 @@ export default function App() {
     </div>
   );
 }
+
 
