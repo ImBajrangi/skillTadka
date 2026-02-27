@@ -2166,8 +2166,8 @@ main {
 /* Studio Journey Horizontal Scroll */
 .journey-section-wrapper {
   position: relative;
-  height: 300vh;
-  /* 3 panels: scroll distance of 200vh for 0-100% progress */
+  height: 400vh;
+  /* 4 panels: scroll distance of 300vh for 0-100% progress */
   z-index: 5;
   background: var(--bg-deep);
 }
@@ -2236,6 +2236,87 @@ main {
   color: var(--text-secondary);
   line-height: 1.6;
   max-width: 600px;
+  transition: color 0.6s var(--ease);
+  --focus-opacity: 0.3;
+  opacity: var(--focus-opacity);
+}
+
+.journey-panel.is-focused p {
+  color: var(--text-primary);
+  --focus-opacity: 1;
+}
+
+.studio-highlight {
+  position: relative;
+  display: inline-block;
+  color: var(--text-primary);
+  font-weight: 700;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.studio-highlight::after {
+  content: '';
+  position: absolute;
+  left: -5%;
+  bottom: 0px;
+  width: 110%;
+  height: 40%;
+  background: var(--accent-gradient);
+  opacity: 0.2;
+  z-index: -1;
+  transform: scaleX(var(--highlight-progress, 0));
+  transform-origin: left;
+  transition: transform 0.1s linear;
+  border-radius: 4px;
+}
+
+.journey-panel.is-focused .studio-highlight {
+  text-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+}
+
+/* hx-13 Reprehensible Effect */
+.hx-13 {
+  position: relative;
+  display: inline-block;
+  --select-width-final: 103%;
+}
+
+.hx__select {
+  position: absolute;
+  width: var(--select-width);
+  height: 100%;
+  left: -1%;
+  top: 10%;
+  background: rgba(109, 215, 230, 0.14);
+  mix-blend-mode: plus-lighter;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hx__select::before,
+.hx__select::after {
+  content: '';
+  position: absolute;
+  top: -0.125em;
+  left: -0.075em;
+  width: 0.155em;
+  height: calc(100% + 0.1275em);
+  background: url('/img/select.svg') no-repeat 0 0;
+  background-size: auto 100%;
+}
+
+.hx__select::after {
+  transform: scaleY(-1);
+  left: auto;
+  right: -0.075em;
+  top: auto;
+  bottom: -0.125em;
+}
+
+.journey-panel.is-focused .hx-13 {
+  color: var(--text-primary);
+  text-shadow: 0 0 20px rgba(109, 215, 230, 0.3);
 }
 
 .panel-deco {

@@ -30,11 +30,29 @@ export default function About() {
                 // Lerp the progress for that "premium" smooth lag feel
                 currentProgress += (targetProgress - currentProgress) * lerpFactor;
 
-                // Precise panel-based translation (3 panels total)
-                const PANELS = 3;
+                // Precise panel-based translation (4 panels total)
+                const PANELS = 4;
                 const translateX = currentProgress * -(PANELS - 1) * 100;
-
                 track.style.transform = `translate3d(${translateX}vw, 0, 0)`;
+
+                // Update per-panel focus and highlight progress
+                const panels = track.querySelectorAll('.journey-panel');
+                panels.forEach((panel, i) => {
+                    const panelProgress = (currentProgress * (PANELS - 1)) - i;
+                    // Focus: 1 when panel is centered (panelProgress = 0)
+                    const focusFactor = Math.max(0, 1 - Math.abs(panelProgress) * 1.5);
+                    panel.classList.toggle('is-focused', focusFactor > 0.5);
+
+                    // Highlight progress: 0 to 1 as panel comes into focus
+                    const highlightProgress = Math.max(0, Math.min(1, (panelProgress + 0.5) * 2));
+                    panel.style.setProperty('--highlight-progress', highlightProgress.toFixed(2));
+
+                    // Special handle for hx-13 select-width
+                    if (i === 3) { // 4th panel
+                        const selectProgress = Math.max(0, Math.min(1, (panelProgress + 0.5) * 2));
+                        panel.style.setProperty('--select-width', `${(selectProgress * 103).toFixed(2)}%`);
+                    }
+                });
             }
             requestRef = requestAnimationFrame(updatePin);
         };
@@ -149,7 +167,7 @@ export default function About() {
                             <div className="panel-content">
                                 <span className="panel-number">01</span>
                                 <h2>THE CONCEPT</h2>
-                                <p>We started with a blank canvas and one rule: respect the silence of thought.</p>
+                                <p>We started with a <span className="studio-highlight">blank canvas</span> and one rule: respect the silence of thought.</p>
                                 <div className="panel-deco">◈</div>
                             </div>
                         </div>
@@ -157,7 +175,7 @@ export default function About() {
                             <div className="panel-content">
                                 <span className="panel-number">02</span>
                                 <h2>THE CRAFT</h2>
-                                <p>Months of engineering to ensure every transition feels physical and every pixel is purposeful.</p>
+                                <p>Months of engineering to ensure every transition feels <span className="studio-highlight">physical</span> and purposeful.</p>
                                 <div className="panel-deco">✧</div>
                             </div>
                         </div>
@@ -165,8 +183,19 @@ export default function About() {
                             <div className="panel-content">
                                 <span className="panel-number">03</span>
                                 <h2>THE FLOW</h2>
-                                <p>An interface that doesn't just work, but vanishes, leaving only you and your goals.</p>
+                                <p>An interface that doesn't just work, but vanishes, leaving only <span className="studio-highlight">you and your goals</span>.</p>
                                 <div className="panel-deco">✦</div>
+                            </div>
+                        </div>
+
+                        <div className="journey-panel panel-reflection">
+                            <div className="panel-content">
+                                <span className="panel-number">04</span>
+                                <h2>REFLECTIONS</h2>
+                                <p>
+                                    <span className="hx-13"><span className="hx__select"></span>"Actions that would be deemed unethical or reprehensible on an individual level can be rationalized and justified within the context of the crowd."</span>
+                                </p>
+                                <div className="panel-deco">◉</div>
                             </div>
                         </div>
                     </div>
