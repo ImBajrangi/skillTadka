@@ -1,15 +1,61 @@
-import React from 'react';
-import { Shield, Zap, Palette, ServerOff, Smartphone, Diamond } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import { Shield, Zap, Palette, ServerOff, Smartphone, Diamond, Sparkles, Layers, Cpu } from 'lucide-react';
 
 export default function About() {
+    const pinWrapperRef = useRef(null);
+    const pinTrackRef = useRef(null);
+
+    useEffect(() => {
+        let requestRef;
+        let currentProgress = 0;
+        let targetProgress = 0;
+        const lerpFactor = 0.1; // Smoothness factor
+
+        const updatePin = () => {
+            if (pinWrapperRef.current && pinTrackRef.current) {
+                const wrapper = pinWrapperRef.current;
+                const track = pinTrackRef.current;
+                const rect = wrapper.getBoundingClientRect();
+                const wrapperH = wrapper.offsetHeight;
+                const viewH = window.innerHeight;
+                const scrollableDistance = wrapperH - viewH;
+
+                if (scrollableDistance > 0) {
+                    // Offset rect.top by header height (80px) for progress sync
+                    const headerOffset = 80;
+                    let rawProgress = -(rect.top - headerOffset) / scrollableDistance;
+                    targetProgress = Math.max(0, Math.min(1, rawProgress));
+                }
+
+                // Lerp the progress for that "premium" smooth lag feel
+                currentProgress += (targetProgress - currentProgress) * lerpFactor;
+
+                // Precise panel-based translation (3 panels total)
+                const PANELS = 3;
+                const translateX = currentProgress * -(PANELS - 1) * 100;
+
+                track.style.transform = `translate3d(${translateX}vw, 0, 0)`;
+            }
+            requestRef = requestAnimationFrame(updatePin);
+        };
+
+        requestRef = requestAnimationFrame(updatePin);
+        return () => cancelAnimationFrame(requestRef);
+    }, []);
+
     return (
         <div className="about-page fade-in">
             {/* Dynamic Immersive Hero */}
             <section className="about-hero bento-hero">
                 <div className="hero-mesh"></div>
                 <div className="aurora-orb orb-lavender" style={{ '--mx': '20%', '--my': '20%' }}></div>
+                <div className="aurora-orb orb-gold" style={{ '--mx': '80%', '--my': '80%' }}></div>
+
                 <div className="about-content">
-                    <div className="status-pill floating">The Elyte Standard</div>
+                    <div className="status-pill floating">
+                        <Sparkles size={12} className="mr-2" />
+                        The Studio Standard
+                    </div>
                     <h2 className="about-title outline-text">PADHLE<br /><span className="solid-text">STUDIO</span></h2>
                     <p className="about-subtitle">
                         A masterclass in digital focus. We've stripped away the noise to engineer
@@ -18,10 +64,9 @@ export default function About() {
                 </div>
             </section>
 
+            {/* Original Bento Grid Restoration */}
             <div className="about-container">
-                {/* Bento Grid Layout */}
                 <div className="bento-grid-master">
-
                     {/* Bento 1: Ultra Privacy (Large Square) */}
                     <div className="bento-card bento-privacy">
                         <div className="bento-glass-overlay"></div>
@@ -31,11 +76,11 @@ export default function About() {
                         <h3>Absolute Privacy</h3>
                         <p>
                             Designed on the principle of "Local-First" architecture.
-                            Zero cloud telemetry. Zero unexpected uploads. Your study materials remain strictly on your machine.
+                            Zero cloud telemetry. Your study materials remain strictly on your machine.
                         </p>
                         <div className="bento-stats horizontal">
-                            <div className="b-stat"><span>100%</span>Local</div>
-                            <div className="b-stat"><span>0</span>Telemetry</div>
+                            <div className="b-stat"><span>100%</span>Local Safe</div>
+                            <div className="b-stat"><span>0</span>Leaks</div>
                         </div>
                     </div>
 
@@ -47,8 +92,12 @@ export default function About() {
                         </div>
                         <h3>Engineered for Flow</h3>
                         <p>
-                            Powered by an optimized rendering core, PadhLe eliminates the microscopic delays that break your concentration. Instant page turns, zero lag.
+                            Powered by an optimized rendering core, PadhLe eliminates the microscopic delays that break concentration.
                         </p>
+                        <div className="perf-tag-list">
+                            <span className="perf-tag"><Cpu size={14} /> Core V2</span>
+                            <span className="perf-tag"><Zap size={14} /> 60fps</span>
+                        </div>
                         <div className="perf-bar-group">
                             <div className="perf-bar"><div className="fill" style={{ width: '98%' }}></div><span>Speed</span></div>
                             <div className="perf-bar"><div className="fill" style={{ width: '95%' }}></div><span>Clarity</span></div>
@@ -57,45 +106,86 @@ export default function About() {
 
                     {/* Bento 3: Offline (Small Square) */}
                     <div className="bento-card bento-offline">
+                        <div className="bento-glass-overlay"></div>
                         <ServerOff size={28} className="text-secondary mb-3" />
-                        <h4>Unplug & Play</h4>
-                        <p>Total functionality without an internet connection.</p>
+                        <h4>Offline Power</h4>
+                        <p>Total functionality without connection. Study anywhere.</p>
                     </div>
 
                     {/* Bento 4: Aesthetics (Wide Rectangle) */}
                     <div className="bento-card bento-aesthetics">
+                        <div className="bento-glass-overlay"></div>
                         <div className="bento-icon-wrap text-indigo">
                             <Palette size={32} />
                         </div>
                         <div className="aes-content">
                             <h3>Studio Detail</h3>
                             <p>
-                                Every pixel is intentional. From multi-layered mesh gradients to physical glassmorphism,
-                                the UI acts as a calm, focusing framing device for your knowledge.
+                                Every pixel is intentional. From mesh gradients to glassmorphism,
+                                the UI acts as a calm framing device for your knowledge.
                             </p>
+                            <div className="aes-features">
+                                <span><Layers size={14} /> Glassmorphism</span>
+                                <span><Sparkles size={14} /> Micro-animations</span>
+                            </div>
                         </div>
                     </div>
 
                     {/* Bento 5: Responsive (Small Square) */}
                     <div className="bento-card bento-responsive">
+                        <div className="bento-glass-overlay"></div>
                         <Smartphone size={28} className="text-secondary mb-3" />
                         <h4>Fluid UI</h4>
                         <p>Perfectly maps to desktop, tablet, and mobile paradigms.</p>
                     </div>
                 </div>
-
-                {/* Company Context / CTA */}
-                <section className="company-info premium-cta">
-                    <div className="company-logo float-slow">
-                        <Diamond size={48} strokeWidth={1} />
-                    </div>
-                    <h4>A Vrindopnishad Masterpiece</h4>
-                    <p>
-                        We build tools that respect the student's intellect. No gimmicks, no superficial features—just raw, unfiltered performance wrapped in unprecedented elegance.
-                    </p>
-                    <button className="elite-btn primary shimmer-btn">Experience The Studio</button>
-                </section>
             </div>
+
+            {/* NEW: The Studio Journey (Horizontal Scroll Effect) */}
+            <div className="journey-section-wrapper" ref={pinWrapperRef}>
+                <div className="journey-pin-inner">
+                    <div className="journey-track" ref={pinTrackRef}>
+                        <div className="journey-panel panel-intro">
+                            <div className="panel-content">
+                                <span className="panel-number">01</span>
+                                <h2>THE CONCEPT</h2>
+                                <p>We started with a blank canvas and one rule: respect the silence of thought.</p>
+                                <div className="panel-deco">◈</div>
+                            </div>
+                        </div>
+                        <div className="journey-panel panel-craft">
+                            <div className="panel-content">
+                                <span className="panel-number">02</span>
+                                <h2>THE CRAFT</h2>
+                                <p>Months of engineering to ensure every transition feels physical and every pixel is purposeful.</p>
+                                <div className="panel-deco">✧</div>
+                            </div>
+                        </div>
+                        <div className="journey-panel panel-flow">
+                            <div className="panel-content">
+                                <span className="panel-number">03</span>
+                                <h2>THE FLOW</h2>
+                                <p>An interface that doesn't just work, but vanishes, leaving only you and your goals.</p>
+                                <div className="panel-deco">✦</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Company Context / CTA */}
+            <section className="company-info premium-cta">
+                <div className="company-logo float-slow">
+                    <Diamond size={48} strokeWidth={1} />
+                </div>
+                <h4>A Vrindopnishad Masterpiece</h4>
+                <p>
+                    We build tools that respect the student's intellect. No gimmicks, no superficial features—just raw, unfiltered performance wrapped in unprecedented elegance.
+                </p>
+                <div className="cta-actions">
+                    <button className="elite-btn primary shimmer-btn">Experience The Studio</button>
+                </div>
+            </section>
         </div>
     );
 }
