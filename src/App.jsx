@@ -11,6 +11,8 @@ import ErrorModal from './components/ErrorModal';
 import Background from './components/Background';
 
 import Marketplace from './components/Marketplace';
+import About from './components/About';
+import Footer from './components/Footer';
 
 export default function App() {
   const fileInputRef = useRef(null);
@@ -68,9 +70,11 @@ export default function App() {
           }}
         />
 
-        <main className={view === 'marketplace' ? 'marketplace-view' : 'viewer-view'}>
+        <main className={view === 'marketplace' ? 'marketplace-view' : view === 'about' ? 'about-view' : 'viewer-view'}>
           {view === 'marketplace' ? (
             <Marketplace onOpenReader={openReader} />
+          ) : view === 'about' ? (
+            <About />
           ) : (
             <>
               <Toolbar
@@ -104,6 +108,8 @@ export default function App() {
             </>
           )}
         </main>
+
+        {(view === 'marketplace' || view === 'about') && <Footer />}
 
         {view === 'viewer' && (
           <Sidebar

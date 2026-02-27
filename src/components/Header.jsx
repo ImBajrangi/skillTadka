@@ -27,6 +27,12 @@ export default function Header({ fileName, isDark, toggleTheme, onOpenFile, curr
                         >
                             Reader
                         </button>
+                        <button
+                            className={`tab-btn ${currentView === 'about' ? 'active' : ''}`}
+                            onClick={() => setView('about')}
+                        >
+                            Info
+                        </button>
                     </nav>
                 </div>
 
