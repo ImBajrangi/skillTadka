@@ -199,7 +199,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       elevation: 0,
                     ),
                     child: Text(
-                      'Enter PadhLe Hub',
+                      'Enter skillTadka Hub',
                       style: SacredStyles.withColor(
                           SacredStyles.inter16
                               .copyWith(fontWeight: FontWeight.bold),

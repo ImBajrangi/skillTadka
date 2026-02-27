@@ -74,7 +74,7 @@ export default function About() {
                         <Sparkles size={12} className="mr-2" />
                         The Studio Standard
                     </div>
-                    <h2 className="about-title outline-text">PADHLE<br /><span className="solid-text">STUDIO</span></h2>
+                    <h2 className="about-title outline-text">skillTadka<br /><span className="solid-text">STUDIO</span></h2>
                     <p className="about-subtitle">
                         A masterclass in digital focus. We've stripped away the noise to engineer
                         the world's most premium, private, and frictionless academic toolkit.
@@ -110,7 +110,7 @@ export default function About() {
                         </div>
                         <h3>Engineered for Flow</h3>
                         <p>
-                            Powered by an optimized rendering core, PadhLe eliminates the microscopic delays that break concentration.
+                            Powered by an optimized rendering core, skillTadka eliminates the microscopic delays that break concentration.
                         </p>
                         <div className="perf-tag-list">
                             <span className="perf-tag"><Cpu size={14} /> Core V2</span>

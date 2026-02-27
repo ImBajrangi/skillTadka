@@ -32,7 +32,7 @@ export default function Footer() {
                         </div>
                         <div className="link-group">
                             <h4>Company</h4>
-                            <a href="#">About PadhLe</a>
+                            <a href="#">About skillTadka</a>
                             <a href="#">Privacy Policy</a>
                             <a href="#">Terms of Service</a>
                         </div>
@@ -41,7 +41,7 @@ export default function Footer() {
 
                 <div className="footer-bottom">
                     <div className="copyright">
-                        © 2025 Vrindopnishad. PadhLe Studio Edition.
+                        © 2025 Vrindopnishad. skillTadka Studio Edition.
                     </div>
                     <div className="social-links">
                         <a href="#" aria-label="Twitter">

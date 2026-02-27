@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppColors {
-  // PadhLe Hub Palette (Stitch Template Exact Match)
+  // skillTadka Hub Palette (Stitch Template Exact Match)
   static const Color primary = Color(0xFF22C55E); // Emerald Glow
   static const Color primaryAction = Color(0xFF15803D); // Forest Dark
   static const Color secondary = Color(0xFF34D399); // Soft Teal Accent
@@ -13,7 +13,7 @@ class AppColors {
   static const Color border = Color(0xFF374151); // Slate Border
   static const Color surfaceDark = Color(0xFF111827); // Same as BG
 
-  // Light Theme Palette (PadhLe Hub Light)
+  // Light Theme Palette (skillTadka Hub Light)
   static const Color bgCream = Color(0xFFFDFCF8); // Soft Light Background
   static const Color bgLight = bgCream; // Alias for compatibility
   static const Color surfaceLight = Color(0xFFFFFFFF); // Pure White Card

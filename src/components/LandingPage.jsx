@@ -51,7 +51,7 @@ export default function LandingPage({ onStartLearning }) {
                             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
                             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
                         </svg>
-                        <span className="lp-brand-text">PadhLe</span>
+                        <span className="lp-brand-text">skillTadka</span>
                     </a>
 
                     <nav className="lp-nav">
@@ -172,7 +172,7 @@ export default function LandingPage({ onStartLearning }) {
             {/* ── Footer ── */}
             <footer className="lp-footer">
                 <div className="lp-wrap">
-                    <p>PadhLe · Built for Students · Powered by PDF.js</p>
+                    <p>skillTadka · Built for Students · Powered by PDF.js</p>
                 </div>
             </footer>
         </div>
