@@ -161,7 +161,6 @@
 
 .lp-cta-sm:hover {
     background: var(--c-primary-dark);
-    transform: translateY(-1px);
 }
 
 /* ═══ HERO ═══ */

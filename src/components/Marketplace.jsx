@@ -1,98 +1,154 @@
 export default function Marketplace({ onOpenReader }) {
     const categories = [
-        { id: 'books', name: 'Textbooks', icon: '📚', count: '1.2k+', color: '#4F46E5' },
-        { id: 'notes', name: 'Premium Notes', icon: '📝', count: '850+', color: '#FACC15' },
-        { id: 'courses', name: 'Masterclasses', icon: '🎓', count: '120+', color: '#10B981' },
-        { id: 'gear', name: 'Study Gear', icon: '🎧', count: '340+', color: '#EC4899' },
+        { id: 'books', name: 'Textbooks', icon: '📖', count: '1.2k+', color: '#6366F1' },
+        { id: 'notes', name: 'Special Notes', icon: '📝', count: '850+', color: '#EAB308' },
+        { id: 'courses', name: 'Masterclasses', icon: '✨', count: '120+', color: '#10B981' },
+        { id: 'gear', name: 'Study Setup', icon: '💻', count: '340+', color: '#EC4899' },
     ];
 
     const products = [
-        { id: 1, name: 'Advanced Calculus Kit', price: '₹499', author: 'Dr. Verma', rating: 4.8, image: 'https://images.unsplash.com/photo-1543004629-142a76d50c9e?auto=format&fit=crop&q=80&w=400' },
-        { id: 2, name: 'Digital Notes: Modern Hist', price: '₹149', author: 'Ankit Raj', rating: 4.9, image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&q=80&w=400' },
-        { id: 3, name: 'Organic Chemistry Vol 1', price: '₹799', author: 'Pearson', rating: 4.7, image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&q=80&w=400' },
-        { id: 4, name: 'JEE Physics Cheatsheet', price: '₹99', author: 'Kota Scholars', rating: 5.0, image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400' },
+        {
+            id: 1,
+            name: 'Vector Calculus: Ultimate Studio Prep',
+            price: '₹599',
+            author: 'Mastery Series',
+            rating: 4.8,
+            sales: '2.4k',
+            category: 'Premium Kit',
+            trending: true,
+            image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=600'
+        },
+        {
+            id: 2,
+            name: 'Elite Productivity: Digital Workspace',
+            price: '₹229',
+            author: 'MindFlow Studio',
+            rating: 4.9,
+            sales: '1.1k',
+            category: 'Digital Resource',
+            new: true,
+            image: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?auto=format&fit=crop&q=80&w=600'
+        },
+        {
+            id: 3,
+            name: 'Minimalist Physics Vol II: Optics',
+            price: '₹849',
+            author: 'Pure Theory',
+            rating: 4.7,
+            sales: '850',
+            category: 'Textbook',
+            image: 'https://images.unsplash.com/photo-1636466484210-9173f4439c3e?auto=format&fit=crop&q=80&w=600'
+        },
+        {
+            id: 4,
+            name: 'Frontend Mastery: React & Framer',
+            price: '₹1,299',
+            author: 'Frontend Pro',
+            rating: 5.0,
+            sales: '420',
+            category: 'Video Course',
+            trending: true,
+            image: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&q=80&w=600'
+        },
     ];
 
     return (
         <div className="marketplace-fade-in">
-            {/* Promo Banner */}
-            <section className="promo-banner">
-                <div className="promo-content">
-                    <span className="badge">New Arrival</span>
-                    <h2>Premium Exam Kits 2025</h2>
-                    <p>Curated by top educators to help you ace your semi-finals.</p>
-                    <button className="secondary-btn">Explore Kits</button>
-                </div>
-                <div className="promo-visual">
-                    <div className="aura-orb yellow-orb"></div>
-                </div>
-            </section>
-
-            {/* Categories Grid */}
-            <section className="category-section">
-                <div className="section-header">
-                    <h3>Explore Categories</h3>
-                    <button className="text-link">View All</button>
-                </div>
-                <div className="bento-categories">
-                    {categories.map(cat => (
-                        <div key={cat.id} className="bento-item" style={{ '--accent-color': cat.color }}>
-                            <span className="cat-icon">{cat.icon}</span>
-                            <div className="cat-info">
-                                <h4>{cat.name}</h4>
-                                <span>{cat.count} items</span>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* Featured Feed */}
-            <section className="product-feed">
-                <div className="section-header">
-                    <h3>Top Study Materials</h3>
-                    <div className="feed-filters">
-                        <button className="filter-chip active">All</button>
-                        <button className="filter-chip">Free</button>
-                        <button className="filter-chip">Premium</button>
+            {/* Elite Hero Experience */}
+            <section className="elite-hero">
+                <div className="hero-mesh"></div>
+                <div className="hero-content">
+                    <div className="status-pill">Elite Studio 2025 Edition</div>
+                    <h2 className="elite-title">STUDIO<br />EXAM KITS</h2>
+                    <p className="elite-subtitle">Elevate your academic journey with the world's most refined study resources.</p>
+                    <div className="hero-actions">
+                        <button className="elite-btn primary" onClick={() => window.scrollTo({ top: 600, behavior: 'smooth' })}>
+                            Shop Collection
+                        </button>
+                        <button className="elite-btn secondary" onClick={onOpenReader}>
+                            Try Demo Reader
+                        </button>
                     </div>
                 </div>
-                <div className="product-grid">
-                    {products.map(product => (
-                        <div key={product.id} className="product-card">
-                            <div className="product-image">
-                                <img src={product.image} alt={product.name} />
-                                <div className="overlay-actions">
-                                    <button className="action-circle" onClick={onOpenReader} title="Preview PDF">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="product-details">
-                                <div className="product-meta">
-                                    <span className="product-rating">⭐ {product.rating}</span>
-                                    <span className="product-author">{product.author}</span>
-                                </div>
-                                <h4>{product.name}</h4>
-                                <div className="product-footer">
-                                    <span className="price">{product.price}</span>
-                                    <button className="buy-btn">Buy Now</button>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
             </section>
 
-            {/* Sticky Reader Invite */}
+            <div className="marketplace-container">
+                {/* Refined Categories */}
+                <section className="category-section">
+                    <div className="section-header">
+                        <h3>Discover Collections</h3>
+                        <button className="text-link">Browse Full Catalog</button>
+                    </div>
+                    <div className="bento-categories">
+                        {categories.map(cat => (
+                            <div key={cat.id} className="bento-item" style={{ '--accent-color': cat.color }}>
+                                <div className="bento-glass"></div>
+                                <span className="cat-icon">{cat.icon}</span>
+                                <div className="cat-info">
+                                    <h4>{cat.name}</h4>
+                                    <span>{cat.count} curated items</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Performance Feed */}
+                <section className="product-feed">
+                    <div className="section-header">
+                        <h3>Elite Marketplace</h3>
+                        <div className="feed-filters">
+                            <button className="filter-chip active">All Elite</button>
+                            <button className="filter-chip">Free Access</button>
+                            <button className="filter-chip">Studio Premium</button>
+                        </div>
+                    </div>
+                    <div className="product-grid">
+                        {products.map(product => (
+                            <div key={product.id} className="product-card">
+                                <div className="product-image">
+                                    <img src={product.image} alt={product.name} loading="lazy" />
+                                    <div className="overlay-actions">
+                                        <button className="action-circle" onClick={onOpenReader} title="Quick Preview">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                                        </button>
+                                    </div>
+                                    {product.trending && <div className="trending-badge">Trending</div>}
+                                    {product.new && <div className="new-badge">New Release</div>}
+                                    <div className="product-badge-overlay">{product.category}</div>
+                                </div>
+                                <div className="product-details">
+                                    <div className="product-meta">
+                                        <div className="product-rating">
+                                            <span>⭐ {product.rating}</span>
+                                            <span className="sales-count">({product.sales} students)</span>
+                                        </div>
+                                        <span className="product-author">{product.author}</span>
+                                    </div>
+                                    <h4>{product.name}</h4>
+                                    <div className="product-footer">
+                                        <div className="price-tag">
+                                            <span className="currency">INR</span>
+                                            <span className="val">{product.price.replace('₹', '')}</span>
+                                        </div>
+                                        <button className="unlock-btn">Unlock Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            </div>
+
+            {/* Float Invite */}
             <div className="reader-invite">
                 <div className="invite-content">
-                    <h4>Have your own notes?</h4>
-                    <p>Read, annotate, and organize them in our professional viewer.</p>
+                    <h4>Studio Reader Access</h4>
+                    <p>Experience the most professional PDF viewer in the industry.</p>
                 </div>
                 <button className="primary-btn yellow-btn" style={{ gap: '0.6rem' }} onClick={onOpenReader}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>
-                    <span>Open Reader</span>
+                    <span>Activate Reader</span>
                 </button>
             </div>
         </div>
