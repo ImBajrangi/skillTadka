@@ -78,13 +78,27 @@ export default function usePdfViewer() {
 
         try {
             const page = await pdfDoc.getPage(num);
+            const dpr = window.devicePixelRatio || 1;
             const viewport = page.getViewport({ scale, rotation });
+
             const canvas = canvasRef.current;
             const ctx = canvas.getContext('2d');
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
 
-            await page.render({ canvasContext: ctx, viewport }).promise;
+            // Set display size (css pixels)
+            canvas.style.width = `${viewport.width}px`;
+            canvas.style.height = `${viewport.height}px`;
+
+            // Set actual size in memory (scaled to dpr)
+            canvas.width = viewport.width * dpr;
+            canvas.height = viewport.height * dpr;
+
+            // Scale context to match dpr
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            await page.render({
+                canvasContext: ctx,
+                viewport: viewport
+            }).promise;
 
             // Render text layer after canvas is done
             if (textLayerRef.current) {
