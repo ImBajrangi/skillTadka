@@ -11,7 +11,7 @@ export default function Header({ fileName, isDark, toggleTheme, onOpenFile, curr
                             <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
                             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
                         </svg>
-                        <h1 className="logo-text">PADH<span>LE</span></h1>
+                        <h1 className="logo-text">SKILL<span>TADKA</span></h1>
                     </div>
 
                     <nav className="header-tabs">

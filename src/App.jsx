@@ -70,7 +70,7 @@ export default function App() {
           }}
         />
 
-        <main className={view === 'marketplace' ? 'marketplace-view' : view === 'about' ? 'about-view' : 'viewer-view'}>
+        <main className={`${view === 'marketplace' ? 'marketplace-view' : view === 'about' ? 'about-view' : 'viewer-view'} ${viewer.isFocusMode ? 'focus-mode-active' : ''}`}>
           {view === 'marketplace' ? (
             <Marketplace onOpenReader={openReader} />
           ) : view === 'about' ? (
@@ -90,15 +90,21 @@ export default function App() {
                 downloadPDF={viewer.downloadPDF}
                 printPDF={viewer.printPDF}
                 pdfLoaded={viewer.pdfLoaded}
+                isFocusMode={viewer.isFocusMode}
+                toggleFocusMode={viewer.toggleFocusMode}
+                searchText={viewer.searchText}
+                handleSearch={viewer.handleSearch}
               />
 
               <PDFCanvas
                 canvasRef={viewer.canvasRef}
+                textLayerRef={viewer.textLayerRef}
                 pageNum={viewer.pageNum}
                 totalPages={viewer.totalPages}
                 prevPage={viewer.prevPage}
                 nextPage={viewer.nextPage}
                 pdfLoaded={viewer.pdfLoaded}
+                isFocusMode={viewer.isFocusMode}
               />
 
               <DropZone
@@ -118,6 +124,10 @@ export default function App() {
             goToPage={viewer.goToPage}
             isOpen={viewer.sidebarOpen}
             onClose={viewer.toggleSidebar}
+            outline={viewer.outline}
+            searchIndices={viewer.searchIndices}
+            searchText={viewer.searchText}
+            toggleSidebar={viewer.toggleSidebar}
           />
         )}
       </div>
@@ -127,5 +137,3 @@ export default function App() {
     </div>
   );
 }
-
-

@@ -1,10 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    'pdfjs-dist/build/pdf.worker.min.js',
-    import.meta.url
-).toString();
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.js`;
 
 export default function usePdfViewer() {
     const [pdfDoc, setPdfDoc] = useState(null);
@@ -18,11 +15,56 @@ export default function usePdfViewer() {
     const [isDark, setIsDark] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [pdfLoaded, setPdfLoaded] = useState(false);
+    const [isFocusMode, setIsFocusMode] = useState(false);
+    const [searchText, setSearchText] = useState('');
+    const [searchIndices, setSearchIndices] = useState([]); // Array of { pageNum, text }
+    const [currentSearchIndex, setCurrentSearchIndex] = useState(-1);
+    const [outline, setOutline] = useState([]);
 
     const pdfDataRef = useRef(null);
     const canvasRef = useRef(null);
+    const textLayerRef = useRef(null);
     const renderingRef = useRef(false);
     const pendingRef = useRef(null);
+
+    // Render text layer
+    const renderTextLayer = useCallback(async (page, viewport) => {
+        if (!textLayerRef.current) return;
+        const textLayerDiv = textLayerRef.current;
+        textLayerDiv.innerHTML = '';
+        textLayerDiv.style.height = `${viewport.height}px`;
+        textLayerDiv.style.width = `${viewport.width}px`;
+
+        const textContent = await page.getTextContent();
+
+        // Use a document fragment for better performance
+        const fragment = document.createDocumentFragment();
+
+        // This is a simplified version of text layer rendering
+        // In a real scenario, we might want to use a more robust library or the full pdf.js text layer builder
+        textContent.items.forEach(item => {
+            const span = document.createElement('span');
+            const tx = pdfjsLib.Util.transform(
+                viewport.transform,
+                item.transform
+            );
+
+            span.style.left = `${tx[4]}px`;
+            span.style.top = `${tx[5]}px`;
+            span.style.fontSize = `${item.height * viewport.scale}px`;
+            span.style.fontFamily = item.fontName;
+            span.textContent = item.str;
+
+            // Basic search highlighting
+            if (searchText && item.str && item.str.toLowerCase().includes(searchText.toLowerCase())) {
+                span.classList.add('search-match');
+            }
+
+            fragment.appendChild(span);
+        });
+
+        textLayerDiv.appendChild(fragment);
+    }, [searchText]);
 
     // Render a page on the canvas
     const renderPage = useCallback(async (num) => {
@@ -43,6 +85,11 @@ export default function usePdfViewer() {
             canvas.width = viewport.width;
 
             await page.render({ canvasContext: ctx, viewport }).promise;
+
+            // Render text layer after canvas is done
+            if (textLayerRef.current) {
+                await renderTextLayer(page, viewport);
+            }
         } catch (err) {
             setError('Error rendering page: ' + err.message);
         } finally {
@@ -55,7 +102,18 @@ export default function usePdfViewer() {
                 renderPage(next);
             }
         }
-    }, [pdfDoc, scale, rotation]);
+    }, [pdfDoc, scale, rotation, renderTextLayer]);
+
+    // Extract Outline
+    const extractOutline = useCallback(async (doc) => {
+        try {
+            const outlineObj = await doc.getOutline();
+            setOutline(outlineObj || []);
+        } catch (err) {
+            console.error("Error extracting outline:", err);
+            setOutline([]);
+        }
+    }, []);
 
     // Load PDF from Uint8Array
     const loadPDF = useCallback(async (data) => {
@@ -66,12 +124,14 @@ export default function usePdfViewer() {
             setTotalPages(doc.numPages);
             setPageNum(1);
             setPdfLoaded(true);
+            setIsFocusMode(false);
+            extractOutline(doc);
         } catch (err) {
             setError('Error loading PDF: ' + err.message);
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [extractOutline]);
 
     // Load PDF from file input
     const handleFileSelect = useCallback((file) => {
@@ -135,6 +195,39 @@ export default function usePdfViewer() {
     // Sidebar
     const toggleSidebar = useCallback(() => setSidebarOpen(o => !o), []);
 
+    // Focus Mode
+    const toggleFocusMode = useCallback(() => setIsFocusMode(f => !f), []);
+
+    // Global Search
+    const handleSearch = useCallback(async (text) => {
+        setSearchText(text);
+        if (!text || text.length < 2) {
+            setSearchIndices([]);
+            setCurrentSearchIndex(-1);
+            if (pdfDoc) renderPage(pageNum);
+            return;
+        }
+
+        if (!pdfDoc) return;
+
+        const results = [];
+        // Scan all pages for the text
+        // Note: For very large PDFs, this might be slow, but it's a start
+        for (let i = 1; i <= pdfDoc.numPages; i++) {
+            const page = await pdfDoc.getPage(i);
+            const textContent = await page.getTextContent();
+            const pageText = textContent.items.map(item => item.str).join(' ');
+            if (pageText.toLowerCase().includes(text.toLowerCase())) {
+                results.push({
+                    pageNum: i,
+                    text: pageText.substring(0, 100) + '...' // Snippet
+                });
+            }
+        }
+        setSearchIndices(results);
+        renderPage(pageNum);
+    }, [pdfDoc, pageNum, renderPage]);
+
     // Fullscreen
     const toggleFullscreen = useCallback(() => {
         if (!document.fullscreenElement) {
@@ -182,15 +275,18 @@ export default function usePdfViewer() {
         if (num >= 1 && num <= totalPages) setPageNum(num);
     }, [totalPages]);
 
-    // Re-render when page/scale/rotation changes
+    // Re-render when page/scale/rotation/searchText changes
     useEffect(() => {
         if (pdfDoc) renderPage(pageNum);
-    }, [pageNum, pdfDoc, scale, rotation, renderPage]);
+    }, [pageNum, pdfDoc, scale, rotation, searchText, renderPage]);
 
     // Keyboard shortcuts
     useEffect(() => {
         const handler = (e) => {
             if (!pdfDoc) return;
+            // Ignore if typing in an input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
             switch (e.key) {
                 case 'ArrowLeft': prevPage(); break;
                 case 'ArrowRight': nextPage(); break;
@@ -198,20 +294,23 @@ export default function usePdfViewer() {
                 case '-': zoomOut(); break;
                 case 'f': case 'F': toggleFullscreen(); break;
                 case 't': case 'T': toggleTheme(); break;
+                case 'z': case 'Z': toggleFocusMode(); break;
             }
         };
         window.addEventListener('keydown', handler);
         return () => window.removeEventListener('keydown', handler);
-    }, [pdfDoc, prevPage, nextPage, zoomIn, zoomOut, toggleFullscreen, toggleTheme]);
+    }, [pdfDoc, prevPage, nextPage, zoomIn, zoomOut, toggleFullscreen, toggleTheme, toggleFocusMode]);
 
     return {
         // State
         pdfDoc, pageNum, totalPages, scale, rotation,
         fileName, isLoading, error, isDark, sidebarOpen, pdfLoaded,
-        canvasRef,
+        isFocusMode, searchText, searchIndices, outline,
+        canvasRef, textLayerRef,
         // Actions
         handleFileSelect, loadFromUrl, prevPage, nextPage,
         zoomIn, zoomOut, rotate, toggleTheme, toggleSidebar,
+        toggleFocusMode, handleSearch,
         toggleFullscreen, downloadPDF, printPDF, clearError, goToPage,
     };
 }

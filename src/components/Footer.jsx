@@ -12,7 +12,7 @@ export default function Footer() {
                                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
                                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
                             </svg>
-                            <h2 className="logo-text">PADH<span>LE</span></h2>
+                            <h2 className="logo-text">SKILL<span>TADKA</span></h2>
                         </div>
                         <p className="brand-tagline">The world's most refined study experience.</p>
                     </div>
