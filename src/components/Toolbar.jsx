@@ -19,7 +19,7 @@ export default function Toolbar({
                     </button>
                 </div>
 
-                <div className="search-box">
+                <div className="search-box mobile-hide">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
                     <input
                         type="text"
@@ -32,17 +32,17 @@ export default function Toolbar({
 
             <div className="toolbar-section center">
                 <div className="page-controls">
-                    <button className="tool-btn" title="Previous (←)" onClick={prevPage} disabled={pageNum <= 1} aria-label="Previous page">
+                    <button className="tool-btn mobile-hide" title="Previous (←)" onClick={prevPage} disabled={pageNum <= 1} aria-label="Previous page">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
                     </button>
                     <div className="page-info">{pageNum} / {totalPages}</div>
-                    <button className="tool-btn" title="Next (→)" onClick={nextPage} disabled={pageNum >= totalPages} aria-label="Next page">
+                    <button className="tool-btn mobile-hide" title="Next (→)" onClick={nextPage} disabled={pageNum >= totalPages} aria-label="Next page">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
                     </button>
                 </div>
             </div>
 
-            <div className="toolbar-section right">
+            <div className="toolbar-section right mobile-hide">
                 <div className="view-controls">
                     <button className={`tool-btn ${isFocusMode ? 'active' : ''}`} title="Focus Mode (Z)" onClick={toggleFocusMode} aria-label="Focus mode">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>

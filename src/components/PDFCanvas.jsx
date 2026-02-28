@@ -1,11 +1,28 @@
+import { useState, useEffect } from 'react';
+
 export default function PDFCanvas({
     canvasRef, textLayerRef, pageNum, totalPages, prevPage, nextPage, pdfLoaded, isFocusMode
 }) {
+    const [animClass, setAnimClass] = useState('');
+    const [prevPageNum, setPrevPageNum] = useState(pageNum);
+
+    useEffect(() => {
+        if (pageNum > prevPageNum) {
+            setAnimClass('page-slide-next');
+        } else if (pageNum < prevPageNum) {
+            setAnimClass('page-slide-prev');
+        }
+        setPrevPageNum(pageNum);
+
+        const timer = setTimeout(() => setAnimClass(''), 300);
+        return () => clearTimeout(timer);
+    }, [pageNum, prevPageNum]);
+
     if (!pdfLoaded) return null;
 
     return (
         <div className={`pdf-container ${isFocusMode ? 'focus-mode' : ''}`}>
-            <div className="pdf-wrapper">
+            <div className={`pdf-wrapper ${animClass}`}>
                 <canvas ref={canvasRef} id="pdf-canvas" />
                 <div ref={textLayerRef} className="text-layer" />
             </div>

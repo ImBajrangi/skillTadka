@@ -26,6 +26,12 @@ export default function usePdfViewer() {
     const textLayerRef = useRef(null);
     const renderingRef = useRef(false);
     const pendingRef = useRef(null);
+    const touchStateRef = useRef({
+        startX: 0,
+        startY: 0,
+        initialDist: 0,
+        initialScale: 1
+    });
 
     // Render text layer
     const renderTextLayer = useCallback(async (page, viewport) => {
@@ -293,6 +299,67 @@ export default function usePdfViewer() {
     useEffect(() => {
         if (pdfDoc) renderPage(pageNum);
     }, [pageNum, pdfDoc, scale, rotation, searchText, renderPage]);
+
+    // Touch Gestures
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const target = canvas.parentElement; // Watch parent to include text layer area
+        if (!target) return;
+
+        const getDist = (touch1, touch2) => {
+            return Math.sqrt(
+                Math.pow(touch1.clientX - touch2.clientX, 2) +
+                Math.pow(touch1.clientY - touch2.clientY, 2)
+            );
+        };
+
+        const handleTouchStart = (e) => {
+            if (e.touches.length === 1) {
+                touchStateRef.current.startX = e.touches[0].clientX;
+                touchStateRef.current.startY = e.touches[0].clientY;
+            } else if (e.touches.length === 2) {
+                touchStateRef.current.initialDist = getDist(e.touches[0], e.touches[1]);
+                touchStateRef.current.initialScale = scale;
+            }
+        };
+
+        const handleTouchMove = (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const dist = getDist(e.touches[0], e.touches[1]);
+                const newScale = touchStateRef.current.initialScale * (dist / touchStateRef.current.initialDist);
+                const clampedScale = Math.min(Math.max(newScale, 0.5), 3.0);
+                setScale(Math.round(clampedScale * 100) / 100);
+            }
+        };
+
+        const handleTouchEnd = (e) => {
+            if (e.changedTouches.length === 1 && e.touches.length === 0) {
+                const deltaX = e.changedTouches[0].clientX - touchStateRef.current.startX;
+                const deltaY = Math.abs(e.changedTouches[0].clientY - touchStateRef.current.startY);
+
+                // Horizontal swipe threshold: 40px for instant feel, vertical constraint: < 50px
+                if (Math.abs(deltaX) > 40 && deltaY < 50) {
+                    if (deltaX > 0) {
+                        prevPage();
+                    } else {
+                        nextPage();
+                    }
+                }
+            }
+        };
+
+        target.addEventListener('touchstart', handleTouchStart, { passive: true });
+        target.addEventListener('touchmove', handleTouchMove, { passive: false });
+        target.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+        return () => {
+            target.removeEventListener('touchstart', handleTouchStart);
+            target.removeEventListener('touchmove', handleTouchMove);
+            target.removeEventListener('touchend', handleTouchEnd);
+        };
+    }, [scale, pdfDoc, prevPage, nextPage]);
 
     // Keyboard shortcuts
     useEffect(() => {

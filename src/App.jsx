@@ -58,7 +58,6 @@ export default function App() {
           currentView={view}
           setView={setView}
         />
-
         <input
           ref={fileInputRef}
           type="file"
