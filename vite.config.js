@@ -7,5 +7,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    rollupOptions: {
+      external: ['firebase/app', 'firebase/auth', 'firebase/analytics', 'firebase/database'],
+    },
   },
 })
