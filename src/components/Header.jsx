@@ -1,7 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Header({ fileName, isDark, toggleTheme, onOpenFile, currentView, setView }) {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    useEffect(() => {
+        // Integrate with the global Vrindopnishad auth system
+        if (window.AuthService) {
+            window.AuthService.updateProfileUI('user-auth-btn');
+            const unsubscribe = window.AuthService.onAuthStateChange(() => {
+                const btn = document.getElementById('user-auth-btn');
+                if (btn) {
+                    window.AuthService.updateProfileUI('user-auth-btn');
+                }
+            });
+            return () => {
+                if (typeof unsubscribe === 'function') {
+                    unsubscribe();
+                }
+            };
+        }
+    }, []);
+
     return (
         <header className="app-header">
             <div className="header-container-inner">
@@ -55,7 +74,7 @@ export default function Header({ fileName, isDark, toggleTheme, onOpenFile, curr
                         <button className="icon-btn" aria-label="Cart">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" /><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" /></svg>
                         </button>
-                        <button className="icon-btn" aria-label="Profile">
+                        <button className="icon-btn" id="user-auth-btn" aria-label="Profile">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                         </button>
                     </div>
